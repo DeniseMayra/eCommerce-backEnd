@@ -1,0 +1,67 @@
+[
+	{
+		"title": "Kawasaki Ninja 400",
+		"description": "ABS KRT",
+		"price": 13300,
+		"status": true,
+		"thumbnails": [
+			"https://www.kawasakinavarro.com.ar/img/motos/kawasaki_ninja_400_navarro_new_4.jpg"
+		],
+		"stock": 10,
+		"category": "mtc",
+		"code": "0111",
+		"id": "ae4fc424-1070-4ba7-a9bc-39727c9daaa2"
+	},
+	{
+		"title": "Kawasaki Z650",
+		"description": "ABS TFT",
+		"price": 15950,
+		"status": true,
+		"thumbnails": [
+			"https://www.kawasakinavarro.com.ar/img/motos/kawasaki_z650_abs_2022_new_2.jpg"
+		],
+		"stock": 8,
+		"category": "mtc",
+		"code": "0222",
+		"id": "ad9f9777-b075-4c50-a48e-aa07839d4a8d"
+	},
+	{
+		"title": "Yamaha YZF-R3",
+		"description": "Bicilindrico en linea, $T, DOHC",
+		"price": 10900,
+		"status": true,
+		"thumbnails": [
+			"https://www.yamaha-motor.com.ar/images/productos/2df8a1c2c4076d667205731fbeaa860e_full_size.webp?660"
+		],
+		"stock": 15,
+		"category": "mtc",
+		"code": "0333",
+		"id": "57d8d87b-24f8-49d5-a1cb-93299ff6ffaf"
+	},
+	{
+		"title": "Casco Smk",
+		"description": "Stellar Classic",
+		"price": 106,
+		"status": true,
+		"thumbnails": [
+			"https://http2.mlstatic.com/D_NQ_NP_888566-MLA31036060970_062019-O.webp"
+		],
+		"stock": 22,
+		"category": "acc",
+		"code": "1111",
+		"id": "4e36c059-47aa-46c4-bfc6-be6fd3f59c2b"
+	},
+	{
+		"title": "Casco MT",
+		"description": "Thunder 4 Exeo B5 Rojo mate",
+		"price": 200,
+		"status": true,
+		"thumbnails": [
+			"https://http2.mlstatic.com/D_NQ_NP_640856-MLA70844838901_082023-O.webp"
+		],
+		"stock": 10,
+		"category": "acc",
+		"code": "1112",
+		"id": "483ffdba-0fb2-474e-ab48-5649f0edc2ed"
+	}
+]
