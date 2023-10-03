@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { CartManager } from '../manager/cartManager.js';
+import { CartManager } from '../dao/fileSystem/manager/cartManager.js';
 
-const cartsRouter = Router();
+const router = Router();
 const manager = new CartManager('./files/carritos.json');
 
-cartsRouter.post('/', async (req,res) => {
+router.post('/', async (req,res) => {
   try{
     res.json(await manager.createCart());
   } catch (error) {
@@ -12,7 +12,7 @@ cartsRouter.post('/', async (req,res) => {
   }
 });
 
-cartsRouter.get('/:cid', async (req,res) => {
+router.get('/:cid', async (req,res) => {
   try{
     res.json(await manager.getProductByCartId(req.params.cid));
   } catch (error) {
@@ -20,7 +20,7 @@ cartsRouter.get('/:cid', async (req,res) => {
   }
 });
 
-cartsRouter.post('/:cid/products/:pid', async (req,res) => {
+router.post('/:cid/products/:pid', async (req,res) => {
   try{
     const newProduct = {
       product: req.params.pid,
@@ -33,4 +33,4 @@ cartsRouter.post('/:cid/products/:pid', async (req,res) => {
   }
 });
 
-export { cartsRouter };
+export { router as cartRouter};

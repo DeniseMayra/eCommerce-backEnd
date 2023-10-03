@@ -1,0 +1,71 @@
+import { cartModel } from '../models/cart.model.js';
+
+export class CartManagerMongo {
+  constructor() {
+    this.model = cartModel;
+  }
+
+  createCart = async() => { 
+    try{
+      const result = await this.model.create(); 
+      return result;
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  getAllCarts = async() => {
+    try{
+      const result = await this.model.find();
+      return result;
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  getProductByCartId = async(id) => {
+    try{
+      const result = await this.model.findById(id);
+      return result;
+
+    } catch (error) {
+      if (error.kind === 'ObjectId') {
+        throw new Error('Id no encontrado');
+      } else {
+        throw new Error(error.message);
+      }
+    }
+  }
+  
+  addProductInCart = async (cid, newProd) => {
+    try{
+      const cart = await this.getProductByCartId(cid);
+      let productExist = false;
+
+      cart.products.forEach(element => {
+        if (element.product === newProd.product){
+          element.quantity = newProd.quantity;
+          productExist = true;
+        }
+      });
+
+      if (!productExist){
+        cart.products.push(newProd);
+      }
+
+      const result = await this.model.findByIdAndUpdate( cid, cart, {new:true});
+      return result;
+
+    } catch (error) {
+      if (error.kind === 'ObjectId') {
+        throw new Error('Id no encontrado');
+      } else {
+        throw new Error(error.message);
+      }
+    }
+  }
+}
+
+  
