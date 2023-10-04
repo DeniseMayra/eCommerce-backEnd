@@ -17,9 +17,9 @@ export class CartManager {
       allCarts.push(cart);
       await fs.promises.writeFile(this.path, JSON.stringify(allCarts, null, '\t'));
 
-      return {error: false, msg:`Carrito creado Correctamente con id: ${cart.id}`};
+      return {error: false, cart};
     } catch (error) {
-      console.log('ERROR: ', error.message);
+      throw new Error(error.message);
     }
   }
 
@@ -41,7 +41,7 @@ export class CartManager {
         return JSON.parse(allCarts);
       }
     } catch (error) {
-      console.log('ERROR: ', error.message);
+      throw new Error(error.message);
     }
   }
 
@@ -51,53 +51,53 @@ export class CartManager {
       const cartById = allCarts.find(cart => cart.id === id);
   
       if (cartById){
-        return {error: false, products: cartById.products};
+        return {error: false, cart: cartById};
       } else {
-        return {error: true, products: null};
+        return {error: true, message:`Id no encontrado`};
       }
     } catch (error) {
-      console.log('ERROR: ', error.message);
+      throw new Error(error.message);
     }
   }
   
   addProductInCart = async (cid, newProd) => {
     try{
       if (newProd.product && newProd.quantity){
-  
+
         const allCarts = await this.getAllCarts();
-        let cartExist = false;
-  
-        allCarts.forEach(cart => {
-          if (cart.id === cid){
-  
-            let productExist = false;
-            cart.products.forEach(element => {
-  
-              if (element.product === newProd.product){
-                element.quantity = element.quantity + newProd.quantity;
-                productExist = true;
+        const cart = allCarts.find(c => c.id === cid);
+        if (cart){
+          allCarts.forEach(cart => {
+            if (cart.id === cid){
+
+              let productExist = false;
+              cart.products.forEach(element => {
+
+                if (element.product === newProd.product){
+                  element.quantity = newProd.quantity;
+                  productExist = true;
+                }
+              });
+
+              if (!productExist){
+                cart.products.push(newProd);
               }
-            });
-  
-            if (!productExist){
-              cart.products.push(newProd);
-            }
-  
-            cartExist = true;
-          }  
-        });
-  
-        if (cartExist){
+
+            }  
+          });
+
           await fs.promises.writeFile(this.path, JSON.stringify(allCarts, null, '\t'));
-          return {error: false, msg:`Producto agregado correctamente`};
+          return {error: false, cart };
+
         } else {
-          return {error: true, msg:`Carrito con id ${cid} no existente`};
+          return {error: true, message:'Id no encontrado'};
         }
+
       } else {
-        return {error: true, msg:`Faltan datos del producto id o cantidad`};
+        return {error: true, message:'Faltan datos del producto id o cantidad'};
       }
     } catch (error) {
-      console.log('ERROR: ', error.message);
+      throw new Error(error.message);
     }
   }
 }

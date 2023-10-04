@@ -12,9 +12,9 @@ const app = express();
 const port = 8080;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-connectDB();
 
 if (isDBSystem){
+  connectDB();
   app.use('/api/carts', cartsRouterMongo);
   app.use('/api/products', productsRouterMongo);
   app.use('/api/message', messageRouterMongo);

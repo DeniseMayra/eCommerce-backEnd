@@ -21,15 +21,15 @@ export class ProductManager {
 
                     allProducts.push(object);
                     await fs.promises.writeFile(this.path, JSON.stringify(allProducts, null, '\t'));
-                    return {error: false, msg:`Archivo creado Correctamente con id: ${object.id}`};
+                    return {error: false, product: object};
                 } else {
-                    return {error: true, msg:`Error: Codigo ${object.code} ya existente`};
+                    return {error: true, message:`Error: Codigo ${object.code} ya existente`};
                 }
             } else {
-                return {error: true, msg:'Faltan datos'};
+                return {error: true, message:'Faltan datos'};
             } 
         } catch (error) {
-            console.log('ERROR: ', error.message);
+            throw new Error(error.message);
         }
     }
 
@@ -60,7 +60,7 @@ export class ProductManager {
                 return JSON.parse(allProducts);
             }
         } catch (error) {
-            console.log('ERROR: ', error.message);
+            throw new Error(error.message);
         }
     }
 
@@ -72,10 +72,10 @@ export class ProductManager {
             if (productById){
                 return {error: false, product: productById};
             } else {
-                return {error: true, product: null};
+                return {error: true, message: 'Id no encontrado'};
             }
         } catch (error) {
-            console.log('ERROR: ', error.message);
+            throw new Error(error.message);
         }
     }
 
@@ -111,31 +111,36 @@ export class ProductManager {
 
                 if (productExist){
                     if (codeExist){
-                        return {error: true, msg:`Error: Codigo ${objectModify.code} ya existente`};
+                        return {error: true, message:`Error: Codigo ${objectModify.code} ya existente`};
                     } else {
                         await fs.promises.writeFile(this.path, JSON.stringify(allProducts, null, '\t'));
-                        return {error: false, msg:`Producto Modificado correctamente`};
+                        return {error: false, product: {...objectModify, id}};
                     }
                 } else {
-                    return {error: true, msg:`El producto no existe`};
+                    return {error: true, message:`Id no encontrado`};
                 }
             } else {
-                return {error: true, msg:'Faltan datos'};
+                return {error: true, message:'Faltan datos'};
             } 
         } catch (error) {
-            throw error;
+            throw new Error(error.message);
         }
     }
 
     deleteProduct = async (id) => {
         try{
             let products = await this.getProducts();
-            products = products.filter(prod => prod.id !== id);
-
-            await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-            return {error: false, msg:`Producto con id "${id}" eliminado correctamente`};
+            const deleteP = products.find(p => p.id === id);
+            
+            if (deleteP){
+                products = products.filter(prod => prod.id !== id);
+                await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
+                return {error: false, product: deleteP};
+            } else {
+                return {error: true, message:`Id no encontrado`};
+            }
         } catch (error){
-            throw error;
+            throw new Error(error.message);
         }
     }
 }
