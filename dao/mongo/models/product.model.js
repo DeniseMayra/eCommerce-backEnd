@@ -23,7 +23,8 @@ const prodSchema = new mongoose.Schema({
   category: {
     required: true,
     type: String,
-    enums: ['mtc', 'acc']
+    enums: ['mtc', 'acc'],
+    index: true
   },
   code: {
     required: true,
