@@ -66,6 +66,35 @@ export class CartManagerMongo {
       }
     }
   }
+
+  // new method only here
+  // getProductByCartIdPopulate = async(id) => {
+  //   try{
+  //     const result = await this.model.findById(id).populate('products.product');
+  //     return result;
+
+  //   } catch (error) {
+  //     if (error.kind === 'ObjectId') {
+  //       throw new Error('Id no encontrado');
+  //     } else {
+  //       throw new Error(error.message);
+  //     }
+  //   }
+  // }
+
+  deleteCart = async(id) => {
+    try{
+      const result = await this.model.findByIdAndDelete(id);
+      return result;
+
+    } catch (error){
+      if (error.kind === 'ObjectId') {
+        throw new Error('Id no encontrado');
+      } else {
+        throw new Error(error.message);
+      }
+    }
+  }
 }
 
   

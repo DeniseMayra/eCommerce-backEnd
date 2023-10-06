@@ -48,4 +48,25 @@ router.get('/', async (req,res) => {
   }
 });
 
+// new endpoint only here
+// router.get('/populate/:cid', async (req,res) => {
+//   try{
+//     const result = await cartsService.getProductByCartIdPopulate(req.params.cid);
+//     res.json({status: SUCCESS, data: result, message: ''});
+
+//   } catch (error) {
+//     res.status(500).json({stauts: ERROR, data: null, message: error.message});
+//   }
+// });
+
+router.delete('/:id', async (req,res) => {
+  try {
+    const result = await cartsService.deleteCart(req.params.id);
+    res.json({status: SUCCESS, data: result, message: ''});
+
+  } catch (error) {
+    res.status(500).json({stauts: ERROR, data: null, message: error.message});
+  }
+})
+
 export { router as cartsRouterMongo };
