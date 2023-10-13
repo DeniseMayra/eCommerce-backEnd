@@ -26,13 +26,24 @@ router.get('/:cid', async (req,res) => {
 
 router.post('/:cid/products/:pid', async (req,res) => {
   try{
+    const { quantity } = req.body;
     const newProduct = {
       product: req.params.pid,
-      ...req.body
+      quantity: quantity ?? 1
     };
     const result = await cartsService.addProductInCart(req.params.cid, newProduct); //object
     res.json({status: SUCCESS, data: result, message: ''});
 
+  } catch (error) {
+    res.status(500).json({stauts: ERROR, data: null, message: error.message});
+  }
+});
+
+// missing in file system router
+router.delete('/:cid/products/:pid', async (req,res) => {
+  try{
+    const result = await cartsService.deleteProductFromCart(req.params.cid, req.params.pid); //object
+    res.json({status: SUCCESS, data: result, message: ''});
   } catch (error) {
     res.status(500).json({stauts: ERROR, data: null, message: error.message});
   }
@@ -49,16 +60,6 @@ router.get('/', async (req,res) => {
 });
 
 // new endpoint only here
-// router.get('/populate/:cid', async (req,res) => {
-//   try{
-//     const result = await cartsService.getProductByCartIdPopulate(req.params.cid);
-//     res.json({status: SUCCESS, data: result, message: ''});
-
-//   } catch (error) {
-//     res.status(500).json({stauts: ERROR, data: null, message: error.message});
-//   }
-// });
-
 router.delete('/:id', async (req,res) => {
   try {
     const result = await cartsService.deleteCart(req.params.id);

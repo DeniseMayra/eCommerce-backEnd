@@ -27,7 +27,7 @@ export class CartManagerMongo {
 
   getProductByCartId = async(id) => {
     try{
-      const result = await this.model.findById(id);
+      const result = await this.model.findById(id).populate('products.product').lean();
       return result;
 
     } catch (error) {
@@ -45,7 +45,7 @@ export class CartManagerMongo {
       let productExist = false;
 
       cart.products.forEach(element => {
-        if (element.product === newProd.product){
+        if (element.product._id == newProd.product){
           element.quantity = newProd.quantity;
           productExist = true;
         }
@@ -67,24 +67,30 @@ export class CartManagerMongo {
     }
   }
 
+  // missing in file system manager
+  deleteProductFromCart = async (cid, pid) => {
+    try {
+      const cart = await this.getProductByCartId(cid);
+      const newProductList = cart.products.filter(prod => prod.product._id != pid);
+      cart.products = newProductList;
+      const result = await this.model.findByIdAndUpdate( cid, cart, {new:true});
+      return result;
+      
+    } catch (error) {
+      if (error.kind === 'ObjectId') {
+        throw new Error('Id no encontrado');
+      } else {
+        throw new Error(error.message);
+      }
+    }
+  }
+
   // new method only here
-  // getProductByCartIdPopulate = async(id) => {
-  //   try{
-  //     const result = await this.model.findById(id).populate('products.product');
-  //     return result;
-
-  //   } catch (error) {
-  //     if (error.kind === 'ObjectId') {
-  //       throw new Error('Id no encontrado');
-  //     } else {
-  //       throw new Error(error.message);
-  //     }
-  //   }
-  // }
-
   deleteCart = async(id) => {
     try{
-      const result = await this.model.findByIdAndDelete(id);
+      // const result = await this.model.findByIdAndDelete(id);
+      const result = await this.model.findByIdAndUpdate( id, {_id: id, products: []}, {new:true});
+      
       return result;
 
     } catch (error){

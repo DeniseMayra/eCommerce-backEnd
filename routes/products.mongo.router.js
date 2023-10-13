@@ -6,11 +6,26 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   try{
-    const result = await productsService.getProducts(); //array
-    res.json({status: SUCCESS, data: result, message: ''});
+    const { limit=10, page=1, sort=1 } = req.query;
+    const query = {};
+    const paginattionOpt = {
+      limit,
+      page,
+      sort: {price: sort}
+    }
+    const result = await productsService.getProducts( query, paginattionOpt ); //array
+    const response = {
+      status: SUCCESS,
+      payload: result.docs,
+      totalPages: result.totalPages, page: result.page, hasPrevPage: result.hasPrevPage, hasNextPage: result.hasNextPage, prevPage: result.prevPage, nextPage: result.nextPage,
+      prevLink: result.hasPrevPage ? '' : null,
+      nextLink: result.hasNextPage ? '' : null
+    }
+    
+    res.json(response);
    
   } catch (error) {
-    res.status(500).json({stauts: ERROR, data: null, message: error.message});
+    res.status(500).json({stauts: ERROR, payload: null, message: error.message});
   }
 });
 

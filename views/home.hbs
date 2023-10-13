@@ -1,0 +1,40 @@
+<h1>PRODUCTOS</h1>
+<div class="container">
+
+  <div style="display: flex; flex-wrap: wrap;">
+    {{#each data.payload}}
+
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{this.title}}</h5>
+          <p class="card-text">{{this.desc}}</p>
+          <p>$ {{this.price}}</p>
+          <a href="#" class="btn btn-primary" onclick="addToCart(`{{this._id}}`)">Add to Cart</a>
+        </div>
+      </div>
+
+    {{/each}}
+
+  </div>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="{{data.prevLink}}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="{{data.nextLink}}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+</div>
+
+<a href="http://localhost:8080/cart">Go to Cart</a>
+
+
+<script src="/js/index.js"></script>
