@@ -1,0 +1,14 @@
+<h1>Profile Page</h1>
+
+
+{{#if error}}
+  {{message}}
+
+{{else}}
+  <h4>Bienvenido {{data.first_name}}</h4>
+
+  <p>{{data.email}}</p>
+
+  <a href="/api/sessions/logout">Cerrar Sesion</a>
+
+{{/if}}

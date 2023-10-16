@@ -1,0 +1,17 @@
+<h1>Signup Page</h1>
+
+<form action="/api/sessions/signup" method="POST">
+  <input type="text" name="first_name" placeholder="Ingrese nombre"><br><br> 
+  <input type="text" name="last_name" placeholder="Ingrese apellido"><br><br>
+  <input type="email" name="email" placeholder="Ingrese email"><br><br>
+  <input type="number" name="age" placeholder="Ingrese edad"><br><br>
+  <input type="password" name="password" placeholder="Ingrese contraseña"><br><br>
+  <br>
+  <button>Registrar</button>
+</form>
+
+{{#if error}}
+  <div class="alert alert-danger" role="alert">
+    {{message}}
+  </div>
+{{/if}}

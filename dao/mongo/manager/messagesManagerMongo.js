@@ -1,6 +1,6 @@
 import { messageModel } from "../models/messages.model.js";
 
-export class messageManagerMongo {
+export class MessageManagerMongo {
   constructor() {
     this.model = messageModel;
   }
