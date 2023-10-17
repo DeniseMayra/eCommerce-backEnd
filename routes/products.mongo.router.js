@@ -1,27 +1,13 @@
 import { Router } from 'express';
 import { productsService } from '../dao/mongo/services.js';
 import { ERROR, SUCCESS } from '../clases/constant.js';
+import { getProductsMongo } from '../clases/router-functions.js';
 
 const router = Router();
 
 router.get('/', async (req, res) => {
   try{
-    const { limit=10, page=1, sort=1 } = req.query;
-    const query = {};
-    const paginattionOpt = {
-      limit,
-      page,
-      sort: {price: sort}
-    }
-    const result = await productsService.getProducts( query, paginattionOpt ); //array
-    const response = {
-      status: SUCCESS,
-      payload: result.docs,
-      totalPages: result.totalPages, page: result.page, hasPrevPage: result.hasPrevPage, hasNextPage: result.hasNextPage, prevPage: result.prevPage, nextPage: result.nextPage,
-      prevLink: result.hasPrevPage ? '' : null,
-      nextLink: result.hasNextPage ? '' : null
-    }
-    
+    const response = await getProductsMongo(req);
     res.json(response);
    
   } catch (error) {
