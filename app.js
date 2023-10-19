@@ -2,6 +2,7 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import passport from 'passport';
 import cors from 'cors';
 import path from 'path';
 import { __dirname } from './utils.js';
@@ -13,6 +14,8 @@ import { cartsRouterMongo } from './routes/carts.mongo.router.js';
 import { messageRouterMongo } from './routes/messages.mongo.router.js';
 import { viewsRouter } from './routes/views.router.js';
 import { sessionRouter } from './routes/sessions.router.js';
+import { initializePassport } from './config/passportConfig.js';
+import { config } from './config/config.js';
 
 const isDBSystem = true;
 
@@ -30,10 +33,16 @@ app.use(session({
     ttl: 3000,
     mongoUrl: mongoUrl
   }),
-  secret: 'secretKeyInMongo',
+  secret: config.server.secretSession,
   resave: true,
   saveUninitialized: true
 }));
+
+
+// ---------- PASSPORT ----------
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // ---------- DATA BASE ----------
