@@ -16,7 +16,7 @@ router.get('/cart', async(req,res) => {
   res.render('cart', {data: result.products});
 });
 
-router.get('/profile', async(req,res) => {
+router.get('/profile', (req,res) => {
   if( req.session.first_name ){
     res.render('profile', {error: false, data: req.session, message: ''});
   } else {
@@ -24,7 +24,7 @@ router.get('/profile', async(req,res) => {
   }
 });
 
-router.get('/login', async(req,res) => {
+router.get('/login', (req,res) => {
   if( req.session.first_name ){
     res.render('profile', {error: false, data: req.session, message: ''});
   } else {
@@ -32,7 +32,7 @@ router.get('/login', async(req,res) => {
   }
 });
 
-router.get('/signup', async(req,res) => {
+router.get('/signup', (req,res) => {
   res.render('signup');
 });
 
