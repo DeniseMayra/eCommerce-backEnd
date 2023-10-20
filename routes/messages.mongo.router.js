@@ -22,7 +22,7 @@ router.post('/', async(req,res) => {
   } catch (error) {
     res.status(500).json({stauts: ERROR, data: null, message: error.message});
   }
-})
+});
 
 router.delete('/:id', async(req,res) => {
   try{
@@ -32,6 +32,6 @@ router.delete('/:id', async(req,res) => {
   } catch (error) {
     res.status(500).json({stauts: ERROR, data: null, message: error.message});
   }
-})
+});
 
 export { router as messageRouterMongo};

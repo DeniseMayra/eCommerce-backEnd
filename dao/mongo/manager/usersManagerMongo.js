@@ -34,4 +34,4 @@ export class UsersManagerMongo {
       throw new Error(error.message);
     }
   };
-}
+};

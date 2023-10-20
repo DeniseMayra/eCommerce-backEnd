@@ -6,23 +6,23 @@ const router = Router();
 
 router.get('/products', async(req,res) => {
   const response = await getProductsMongo(req);
-  const message = req.session.first_name ? `Bienvenid@ ${req.session.first_name}` : 'Bienvenid@'
+  const message = req.session.first_name ? `Bienvenid@ ${req.session.first_name}` : 'Bienvenid@';
 
   res.render('home', {data: response, welcomeMessage: message});
-})
+});
 
 router.get('/cart', async(req,res) => {
   const result = await cartsService.getProductByCartId('651f6661f0f110960f1f1dfb');
   res.render('cart', {data: result.products});
-})
+});
 
 router.get('/profile', async(req,res) => {
   if( req.session.first_name ){
     res.render('profile', {error: false, data: req.session, message: ''});
   } else {
-    res.render('profile', {error: true, message: 'Debe iniciar sesion'})
+    res.render('profile', {error: true, message: 'Debe iniciar sesion'});
   }
-})
+});
 
 router.get('/login', async(req,res) => {
   if( req.session.first_name ){
@@ -30,11 +30,11 @@ router.get('/login', async(req,res) => {
   } else {
     res.render('login');
   }
-})
+});
 
 router.get('/signup', async(req,res) => {
   res.render('signup');
-})
+});
 
 
 export { router as viewsRouter};

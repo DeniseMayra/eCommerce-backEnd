@@ -47,7 +47,7 @@ productRouter.post('/', async(req,res) => {
   } catch (error) {
     res.status(500).json({stauts: ERROR, data: null, message: error.message});
   }
-})
+});
 
 productRouter.put('/:pid', async(req,res) => {
   try{
@@ -62,7 +62,7 @@ productRouter.put('/:pid', async(req,res) => {
   } catch (error) {
     res.status(500).json({stauts: ERROR, data: null, message: error.message});
   }
-})
+});
 
 productRouter.delete('/:pid', async(req,res) => {
   try{
@@ -76,6 +76,6 @@ productRouter.delete('/:pid', async(req,res) => {
   } catch (error) {
     res.status(500).json({stauts: ERROR, data: null, message: error.message});
   }
-})
+});
 
 export { productRouter };

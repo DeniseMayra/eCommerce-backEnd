@@ -8,7 +8,7 @@ export const getProductsMongo = async (req) => {
     limit,
     page,
     sort: {price: sort},
-  }
+  };
   const result = await productsService.getProducts( query, paginattionOpt ); //array
 
   const baseUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
@@ -20,11 +20,11 @@ export const getProductsMongo = async (req) => {
     prevLink: result.hasPrevPage ? getPrevLink(baseUrl, result) : null,
     nextLink: result.hasNextPage ? getNextLink(baseUrl, result) : null
   };
-}
+};
 
 function getPrevLink(baseUrl, result) {
   return baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`);
-}
+};
 function getNextLink(baseUrl, result) {
   return baseUrl.includes('page') ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`);
-}
+};

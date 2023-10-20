@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/products', async(req,res) => {
   const response = await getProductsMongo(req);
-  const message = req.user?.first_name ? `Bienvenid@ ${req.user.first_name}` : 'Bienvenid@'
+  const message = req.user?.first_name ? `Bienvenid@ ${req.user.first_name}` : 'Bienvenid@';
 
   res.render('home', {data: response, welcomeMessage: message});
 });
@@ -20,7 +20,7 @@ router.get('/profile', async(req,res) => {
   if( req.user ){
     res.render('profile', {error: false, data: req.user, message: ''});
   } else {
-    res.render('profile', {error: true, message: 'Debe iniciar sesion'})
+    res.render('profile', {error: true, message: 'Debe iniciar sesion'});
   }
 });
 

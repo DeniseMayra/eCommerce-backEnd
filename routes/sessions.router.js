@@ -36,13 +36,13 @@ router.post('/login', async (req,res) => {
   } catch (error) {
     res.render('login', {error: true, message: 'Error en el login'});
   }
-})
+});
 
 router.get('/logout', async (req,res) => {
   try {
     req.session.destroy(err => {
       if (err) {
-        console.log(err)
+        console.log(err);
         res.render('profile', {error: true, message: 'No se puede cerrar session'});
       } else {
         res.redirect('/login');
@@ -52,6 +52,6 @@ router.get('/logout', async (req,res) => {
   } catch (error) {
     res.render('profile', {error: true, message: error.message});
   }
-})
+});
 
-export { router as sessionRouter}
+export { router as sessionRouter};
