@@ -1,5 +1,6 @@
 import { usersModel } from '../models/users.model.js';
 import { SUCCESS, ERROR } from '../../../clases/constant.js';
+import { createHash, isValidPassword } from '../../../utils.js';
 
 export class UsersManagerMongo {
   constructor() {
@@ -8,6 +9,7 @@ export class UsersManagerMongo {
 
   signupNewUser = async(object) => {
     try {
+      object.password = createHash(object.password);
       return await this.model.create(object);
       
     } catch (error) {
@@ -22,7 +24,7 @@ export class UsersManagerMongo {
       if ( !user ){
         return {status: ERROR, data: null, message: 'Ususario no registrado'};
       }
-      if ( user.password !== object.password){
+      if ( !isValidPassword(object.password, user) ){
         return {status: ERROR, data: null, message: 'Contraseña incorrecta'};
       }
 
