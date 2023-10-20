@@ -6,18 +6,21 @@ import passport from 'passport';
 import cors from 'cors';
 import path from 'path';
 import { __dirname } from './utils.js';
-import { connectDB, mongoUrl } from './config/dbConnection.js';
+import { connectDB } from './config/dbConnection.js';
 import { productRouter } from './routes/products.router.js';
-import { cartRouter } from './routes/carts.router.js';
 import { productsRouterMongo } from './routes/products.mongo.router.js';
+import { cartRouter } from './routes/carts.router.js';
 import { cartsRouterMongo } from './routes/carts.mongo.router.js';
 import { messageRouterMongo } from './routes/messages.mongo.router.js';
 import { viewsRouter } from './routes/views.router.js';
+import { viewsPassportRouter } from './routes/views-passport.router.js';
 import { sessionRouter } from './routes/sessions.router.js';
+import { sessionPassportRouter } from './routes/session-passport.router.js';
 import { initializePassport } from './config/passportConfig.js';
 import { config } from './config/config.js';
 
 const isDBSystem = true;
+const sessionWithPassport = true;
 
 // ---------- CONFIG ----------
 const app = express();
@@ -31,7 +34,7 @@ app.use(cors());
 app.use(session({
   store: MongoStore.create({
     ttl: 3000,
-    mongoUrl: mongoUrl
+    mongoUrl: config.mongo.url
   }),
   secret: config.server.secretSession,
   resave: true,
@@ -40,9 +43,11 @@ app.use(session({
 
 
 // ---------- PASSPORT ----------
-initializePassport();
-app.use(passport.initialize());
-app.use(passport.session());
+if (sessionWithPassport){
+  initializePassport();
+  app.use(passport.initialize());
+  app.use(passport.session());
+}
 
 
 // ---------- DATA BASE ----------
@@ -51,12 +56,17 @@ if (isDBSystem){
   app.use('/api/carts', cartsRouterMongo);
   app.use('/api/products', productsRouterMongo);
   app.use('/api/message', messageRouterMongo);
-  app.use('/', viewsRouter);
 } else {
   app.use('/api/carts', cartRouter);
   app.use('/api/products', productRouter);
 }
-app.use('/api/sessions', sessionRouter)
+if (sessionWithPassport){
+  app.use('/', viewsPassportRouter);
+  app.use('/api/sessions', sessionPassportRouter);
+} else {
+  app.use('/', viewsRouter);
+  app.use('/api/sessions', sessionRouter);
+}
 
 
 // ---------- VIEWS ----------
