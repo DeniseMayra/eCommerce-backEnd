@@ -18,7 +18,8 @@ router.get('/cart', async(req,res) => {
 
 router.get('/profile', (req,res) => {
   if( req.user ){
-    res.render('profile', {error: false, data: req.user, message: ''});
+    const welcomeMessage = req.user?.first_name ? `Bienvenid@ ${req.user.first_name}` : 'Bienvenid@';
+    res.render('profile', {error: false, data: req.user, message: '', welcomeMessage});
   } else {
     res.render('profile', {error: true, message: 'Debe iniciar sesion'});
   }
@@ -26,14 +27,18 @@ router.get('/profile', (req,res) => {
 
 router.get('/login', (req,res) => {
   if( req.user ){
-    res.render('profile', {error: false, data: req.user, message: ''});
+    res.redirect('profile');
   } else {
     res.render('login');
   }
 });
 
 router.get('/signup', (req,res) => {
-  res.render('signup');
+  if ( req.user ){
+    res.redirect('profile');
+  } else {
+    res.render('signup');
+  }
 });
 
 

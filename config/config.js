@@ -9,9 +9,9 @@ export const config = {
   mongo:{
     url: process.env.MONGO_URL
   },
-  // github:{
-  //   callbackUrl: process.env.
-  //   clientId: process.env.
-  //   clientSecret: process.env.
-  // }
+  github:{
+    callbackUrl: process.env.GITHUB_CALLBACK_URL,
+    clientId: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET
+  }
 };

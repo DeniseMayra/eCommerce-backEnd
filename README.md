@@ -10,3 +10,6 @@
 
 3. Desafio Login
 > Implementacion de singup, login y logout, con sus respectivas vistas condicionales.
+
+4. Desafio Refactor Login
+> Hasheo de password, implementacion de passport, autenticacion con GitHub

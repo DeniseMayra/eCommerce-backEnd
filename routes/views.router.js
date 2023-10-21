@@ -18,7 +18,8 @@ router.get('/cart', async(req,res) => {
 
 router.get('/profile', (req,res) => {
   if( req.session.first_name ){
-    res.render('profile', {error: false, data: req.session, message: ''});
+    const welcomeMessage = req.session?.first_name ? `Bienvenid@ ${req.session.first_name}` : 'Bienvenid@';
+    res.render('profile', {error: false, data: req.session, message: '', welcomeMessage});
   } else {
     res.render('profile', {error: true, message: 'Debe iniciar sesion'});
   }
