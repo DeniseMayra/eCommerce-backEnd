@@ -1,8 +1,9 @@
 import passport from 'passport';
 import { Router } from 'express';
-import { ERROR, SUCCESS } from '../clases/constant.js';
+import { ERROR } from '../clases/constant.js';
 import { config } from '../config/config.js';
 import { generateToken } from '../utils.js';
+import { authenticate } from '../config/auth.js';
 
 const router = Router();
 
@@ -30,7 +31,7 @@ router.post('/login', passport.authenticate('LoginLocal',
   async (req,res) => {
     try {
       const token = generateToken(req.user);
-      res.cookie('accessToken', token).json({error: false, message: 'login success'});
+      res.cookie('accessToken', token, {httpOnly: true, expiresIn: '24h'}).json({error: false, message: 'login success'});
 
     } catch (error) {
       res.json({error: true, message: 'Error en el Login'});
@@ -47,27 +48,15 @@ router.get('/logout', async (req,res) => {
 });
 
 
-router.get('/login',passport.authenticate('jwtAuth', 
-  {
-    session: false,
-    failureRedirect: '/api/sessions/fail-auth'
-  }) , (req,res) => {
+router.get('/login', authenticate('jwtAuth') , (req,res) => {
   res.json({error: false, message: 'valido', user: req.user}); 
 });
 
-router.get('/profile',passport.authenticate('jwtAuth', 
-  {
-    session: false,
-    failureRedirect: '/api/sessions/fail-auth'
-  }) , (req,res) => {
+router.get('/profile', authenticate('jwtAuth'), (req,res) => {
   res.json({error: false, message: 'valido', user: req.user}); 
 });
 
-router.get('/signup',passport.authenticate('jwtAuth', 
-  {
-    session: false,
-    failureRedirect: '/api/sessions/fail-auth'
-  }) , (req,res) => {
+router.get('/signup', authenticate('jwtAuth') , (req,res) => {
   res.json({error: false, message: 'valido', user: req.user}); 
 });
 
