@@ -13,3 +13,6 @@
 
 4. Desafio Refactor Login
 > Hasheo de password, implementacion de passport, autenticacion con GitHub
+
+5. Integracion 
+> Uso de autenticacion con passport-jwt y manejo de cookies para jsonWebToken
