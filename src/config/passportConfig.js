@@ -1,9 +1,14 @@
 import passport from 'passport';
 import localStrategy from 'passport-local';
 import githubStrategy from 'passport-github2';
+import jwt from 'passport-jwt';
 import { usersModel } from '../dao/mongo/models/users.model.js';
 import { createHash, isValidPassword } from '../utils.js';
 import { config } from './config.js';
+import { cartsService } from '../dao/mongo/services.js';
+
+const JWTStrategy = jwt.Strategy;
+const extractJWT = jwt.ExtractJwt;
 
 // ---------- LOCAL STRATEGY ----------
 // localStrategy: username y password
@@ -21,8 +26,12 @@ export const initializePassport = () => {
         if ( user ){
           return done(null, false);
         }
+
+        const cart = await cartsService.createCart(); //object
+        
         let newUser = req.body;
         newUser.email = username;
+        newUser.cartId = cart._id;
         newUser.password = createHash(password);
         const userCreated = await usersModel.create(newUser);
         return done(null, userCreated);
@@ -32,15 +41,6 @@ export const initializePassport = () => {
       }
     }
   ));
-
-  passport.serializeUser((user,done) => {
-    done(null, user._id);
-  });
-
-  passport.deserializeUser( async (id, done) => {
-    const user = await usersModel.findById(id);
-    done(null, user); // informacion del usuario desde DB en req.user
-  });
 
   passport.use('LoginLocal', new localStrategy(
     { usernameField: 'email'},
@@ -61,6 +61,24 @@ export const initializePassport = () => {
     }
   ));
 
+
+  // ---------- JWT STRATEGY ----------
+  passport.use('jwtAuth', new JWTStrategy(
+    {
+      jwtFromRequest: extractJWT.fromExtractors([cookieExtractor]),
+      secretOrKey: config.token.secretToken
+    },
+    async ( jwtPayload, done) => {
+      try {
+        return done(null, jwtPayload); // req.user con la info del token      
+
+      } catch (error) {
+        return done(error);
+      }
+    }
+  ));
+
+
   // ---------- GITHUB STRATEGY ----------
   passport.use('SignupGithub', new githubStrategy(
     {
@@ -76,12 +94,16 @@ export const initializePassport = () => {
           return done(null, user); // si esta registrado se loguea
         }
 
+        const cart = await cartsService.createCart(); //object
+
         const newUser = {
           first_name: profile.displayName,
           last_name: profile.username,
           email: profile._json.email,
           age: null,
-          password: createHash(profile.id)
+          password: createHash(profile.id),
+          role: 'user',
+          cartId: cart._id
         };
 
         const userCreated = await usersModel.create(newUser);
@@ -94,3 +116,10 @@ export const initializePassport = () => {
   ));
 };
 
+const cookieExtractor = (req) => {
+  let token = null;
+  if ( req && req.cookies ){
+    token = req.cookies['accessToken'];
+  }
+  return token;
+};

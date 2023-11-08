@@ -12,33 +12,24 @@ router.get('/products', async(req,res) => {
 });
 
 router.get('/cart', async(req,res) => {
-  const result = await cartsService.getProductByCartId('651f6661f0f110960f1f1dfb');
-  res.render('cart', {data: result.products});
+  if ( req.user ){
+    const result = await cartsService.getProductByCartId(req.user.cartId);
+    res.render('cart', {data: result.products});
+  } else {
+    res.redirect('login');
+  }
 });
 
 router.get('/profile', (req,res) => {
-  if( req.user ){
-    const welcomeMessage = req.user?.first_name ? `Bienvenid@ ${req.user.first_name}` : 'Bienvenid@';
-    res.render('profile', {error: false, data: req.user, message: '', welcomeMessage});
-  } else {
-    res.render('profile', {error: true, message: 'Debe iniciar sesion'});
-  }
+  res.render('profile');
 });
 
 router.get('/login', (req,res) => {
-  if( req.user ){
-    res.redirect('profile');
-  } else {
     res.render('login');
-  }
 });
 
 router.get('/signup', (req,res) => {
-  if ( req.user ){
-    res.redirect('profile');
-  } else {
     res.render('signup');
-  }
 });
 
 

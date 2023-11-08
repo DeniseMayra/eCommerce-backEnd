@@ -1,15 +1,12 @@
 <h1>Login Page</h1>
 
-
-<form action="/api/sessions/login" method="POST">
+<form id="loginForm">
   <input type="email" name="email" placeholder="Ingrese email" required><br><br>
   <input type="password" name="password" placeholder="Ingrese contraseña" required><br><br>
   <br>
   <button type="submit">Iniciar Sesion</button>
 </form>
 
-{{#if error}}
-  <div class="alert alert-danger" role="alert">
-    {{message}}
-  </div>
-{{/if}}
+<div id="errorMsj"></div>
+
+<script src="/js/login.js"></script>
