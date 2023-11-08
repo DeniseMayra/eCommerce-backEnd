@@ -81,5 +81,8 @@ router.get('/fail-auth', (req,res) => {
   res.json({error: true, message: 'token invalido'});
 });
 
+router.get('*', (req,res) => {
+  res.render('notFound');
+});
 
 export { router as sessionPassportRouter};
