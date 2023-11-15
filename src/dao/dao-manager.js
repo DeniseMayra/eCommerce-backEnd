@@ -24,8 +24,8 @@ switch(persistence){
     const { CartManager } = await import('./fileSystem/manager/cartManager.js');
     const { MessagesManager } = await import('./fileSystem/manager/messagesManager.js');
     const { UserManager } = await import('./fileSystem/manager/usersManager.js');
-    productsDAO = new ProductManager('./fileSystem/files/productos.json');
-    cartsDAO = new CartManager('./fileSystem/files/carritos.json');
+    productsDAO = new ProductManager('./src/dao/fileSystem/files/productos.json');
+    cartsDAO = new CartManager('./src/dao/fileSystem/files/carritos.json');
     messagesDAO = new MessagesManager();
     usersDAO = new UserManager();
     break;

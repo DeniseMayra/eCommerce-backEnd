@@ -12,7 +12,7 @@ export class CartManager {
       let cart = null;
       do {
         cart = {id: randomUUID(), products: []};
-      } while (!this.isValidId(cart.id, allCarts));
+      } while (!this.isValidId(cart._id, allCarts));
 
       allCarts.push(cart);
       await fs.promises.writeFile(this.path, JSON.stringify(allCarts, null, '\t'));
@@ -24,7 +24,7 @@ export class CartManager {
   }
 
   isValidId = (id, allCarts) => {
-    const cart = allCarts.find(ele => ele.id === id);
+    const cart = allCarts.find(ele => ele._id === id);
     if (cart) {
       return false;
     } else {
@@ -48,7 +48,7 @@ export class CartManager {
   getProductByCartId = async(id) => {
     try{
       const allCarts = await this.getAllCarts();
-      const cartById = allCarts.find(cart => cart.id === id);
+      const cartById = allCarts.find(cart => cart._id === id);
   
       if (cartById){
         return cartById;
@@ -65,10 +65,10 @@ export class CartManager {
       if (newProd.product && newProd.quantity){
 
         const allCarts = await this.getAllCarts();
-        const cart = allCarts.find(c => c.id === cid);
+        const cart = allCarts.find(c => c._id === cid);
         if (cart){
           allCarts.forEach(cart => {
-            if (cart.id === cid){
+            if (cart._id === cid){
 
               let productExist = false;
               cart.products.forEach(element => {
@@ -115,7 +115,7 @@ export class CartManager {
   deleteCart = async (id) => {
     try {
       const allCarts = await this.getAllCarts();
-      const carts = allCarts.find(cart => cart.id !== id);
+      const carts = allCarts.find(cart => cart._id !== id);
 
       await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
 
