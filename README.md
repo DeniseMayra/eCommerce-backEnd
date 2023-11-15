@@ -16,3 +16,6 @@
 
 5. Integracion 
 > Uso de autenticacion con passport-jwt y manejo de cookies para jsonWebToken
+
+6. Reestructura de nuestro servidor
+> Refactor app > router > controller > service > dao - Factory Manager 
