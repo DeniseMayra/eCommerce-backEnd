@@ -1,11 +1,20 @@
 import mongoose from 'mongoose';
 import { config } from './config.js';
 
-export const connectDB = async() => {
-  try {
+export class DbConection {
+  static #instance
+  
+  static async #connect() {
     await mongoose.connect(config.mongo.url);
-    console.log('DB conectado correctamente');
-  } catch (error) {
-    console.log(`Error al conectar a DB: ${error.message}`);
   }
-};
+  
+  static getInstance() {
+    if (this.#instance){
+      console.log('Db ya conectada');
+    } else {
+      this.#instance = this.#connect();
+      console.log('DB conectada');
+    }
+    return this.#instance;
+  }
+}
