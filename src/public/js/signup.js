@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async() => {
     headers: {
       "Content-type": 'application/json'
     },
-    method: 'get',
+    method: 'get'
   });
   const result = await response.json();
   if (result.error === false){

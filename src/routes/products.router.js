@@ -1,81 +1,16 @@
 import { Router } from 'express';
-import { ERROR, SUCCESS } from '../clases/constant.js';
-import { ProductManager } from '../dao/fileSystem/manager/productManager.js';
+import { ProductsController } from '../controller/products.controller.js';
 
-const productRouter = Router();
-const manager = new ProductManager('./dao/fileSystem/files/productos.json');
+const router = Router();
 
-productRouter.get('/', async (req,res) => {
-  try{
-    const products = await manager.getProducts();
-    const limit = req.query.limit;
-    if (limit){
-      res.json({status: SUCCESS, data: products.slice(0, limit), message: ''});
-    } else {
-      res.json({status: SUCCESS, data: products, message: ''});
-    }
+router.get('/', ProductsController.getProducts);
 
-  } catch (error) {
-    res.status(500).json({stauts: ERROR, data: null, message: error.message});
-  }
-});
+router.get('/:pid', ProductsController.getById);
 
-productRouter.get('/:pid', async (req, res) => {
-  try{
-    const result = await manager.getProductById(req.params.pid);
-    if (result.error){
-      res.status(500).json({stauts: ERROR, data: null, message: result.message});
-    } else {
-      res.json({status: SUCCESS, data: result.product, message: ''});
-    }
+router.post('/', ProductsController.addProduct);
 
-  } catch (error) {
-    res.status(500).json({stauts: ERROR, data: null, message: error.message});
-  }
-});
+router.put('/:id', ProductsController.update);
 
-productRouter.post('/', async(req,res) => {
-  try{
-    const result = await manager.addProduct(req.body);
+router.delete('/:id', ProductsController.delete);
 
-    if (result.error){
-      res.status(500).json({stauts: ERROR, data: null, message: result.message});
-    } else {
-      res.json({status: SUCCESS, data: result.product, message: ''});
-    }
-
-  } catch (error) {
-    res.status(500).json({stauts: ERROR, data: null, message: error.message});
-  }
-});
-
-productRouter.put('/:pid', async(req,res) => {
-  try{
-    const result = await manager.updateProduct(req.params.pid, req.body);
-
-    if (result.error){
-      res.status(500).json({stauts: ERROR, data: null, message: result.message});
-    } else {
-      res.json({status: SUCCESS, data: result.product, message: ''});
-    }
-  
-  } catch (error) {
-    res.status(500).json({stauts: ERROR, data: null, message: error.message});
-  }
-});
-
-productRouter.delete('/:pid', async(req,res) => {
-  try{
-    const result = await manager.deleteProduct(req.params.pid);
-    if (result.error){
-      res.status(500).json({stauts: ERROR, data: null, message: result.message});
-    } else {
-      res.json({status: SUCCESS, data: result.product, message: ''});
-    }
-  
-  } catch (error) {
-    res.status(500).json({stauts: ERROR, data: null, message: error.message});
-  }
-});
-
-export { productRouter };
+export { router as productsRouter };

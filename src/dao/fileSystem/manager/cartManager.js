@@ -17,7 +17,7 @@ export class CartManager {
       allCarts.push(cart);
       await fs.promises.writeFile(this.path, JSON.stringify(allCarts, null, '\t'));
 
-      return {error: false, cart};
+      return cart;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -51,9 +51,9 @@ export class CartManager {
       const cartById = allCarts.find(cart => cart.id === id);
   
       if (cartById){
-        return {error: false, cart: cartById};
+        return cartById;
       } else {
-        return {error: true, message:`Id no encontrado`};
+        throw new Error('Id no encontrado');
       }
     } catch (error) {
       throw new Error(error.message);
@@ -87,15 +87,38 @@ export class CartManager {
           });
 
           await fs.promises.writeFile(this.path, JSON.stringify(allCarts, null, '\t'));
-          return {error: false, cart };
+          return cart;
 
         } else {
-          return {error: true, message:'Id no encontrado'};
+          throw new Error('Id no encontrado');
         }
 
       } else {
-        return {error: true, message:'Faltan datos del producto id o cantidad'};
+        throw new Error('Faltan datos del producto id o cantidad');
       }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  deleteProductFromCart = async(cid, pid) => {
+    try {
+      // To Do: delete functionality
+      const result = await this.getProductByCartId(cid);
+      
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  deleteCart = async (id) => {
+    try {
+      const allCarts = await this.getAllCarts();
+      const carts = allCarts.find(cart => cart.id !== id);
+
+      await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
+
+      return carts;
     } catch (error) {
       throw new Error(error.message);
     }

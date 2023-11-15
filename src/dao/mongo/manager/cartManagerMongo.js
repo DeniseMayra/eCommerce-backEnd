@@ -68,7 +68,6 @@ export class CartManagerMongo {
     }
   }
 
-  // missing in file system manager
   deleteProductFromCart = async (cid, pid) => {
     try {
       const cart = await this.getProductByCartId(cid);
@@ -86,12 +85,9 @@ export class CartManagerMongo {
     }
   }
 
-  // new method only here
   deleteCart = async(id) => {
     try{
-      // const result = await this.model.findByIdAndDelete(id);
       const result = await this.model.findByIdAndUpdate( id, {_id: id, products: []}, {new:true});
-      
       return result;
 
     } catch (error){

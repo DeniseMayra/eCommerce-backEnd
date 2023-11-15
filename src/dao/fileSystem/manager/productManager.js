@@ -13,27 +13,27 @@ export class ProductManager {
 
                 const allProducts = await this.getProducts();
 
-                if (this.isValidCode(object.code, allProducts)){
+                if (this.#isValidCode(object.code, allProducts)){
 
                     do {
                         object = { ...object, id: randomUUID() };
-                    } while (!this.isValidId(object.id, allProducts));
+                    } while (!this.#isValidId(object.id, allProducts));
 
                     allProducts.push(object);
                     await fs.promises.writeFile(this.path, JSON.stringify(allProducts, null, '\t'));
-                    return {error: false, product: object};
+                    return object;
                 } else {
-                    return {error: true, message:`Error: Codigo ${object.code} ya existente`};
+                    throw new Error(`Error: Codigo ${object.code} ya existente`);
                 }
             } else {
-                return {error: true, message:'Faltan datos'};
+                throw new Error('Faltan datos');
             } 
         } catch (error) {
             throw new Error(error.message);
         }
     }
 
-    isValidCode = (code, allProducts) => {
+    #isValidCode = (code, allProducts) => {
         const product = allProducts.find(ele => ele.code === code);
         if (product) {
             return false;
@@ -42,7 +42,7 @@ export class ProductManager {
         }
     }
 
-    isValidId = (id, allCarts) => {
+    #isValidId = (id, allCarts) => {
         const cart = allCarts.find(ele => ele.id === id);
         if (cart) {
           return false;
@@ -70,9 +70,9 @@ export class ProductManager {
             const productById = allProducts.find(ele => ele.id === id);
     
             if (productById){
-                return {error: false, product: productById};
+                return  productById;
             } else {
-                return {error: true, message: 'Id no encontrado'};
+                throw new Error('Id no encontrado');
             }
         } catch (error) {
             throw new Error(error.message);
@@ -93,7 +93,7 @@ export class ProductManager {
                     if (prod.id === id){
                         productExist = true;
 
-                        if (objectModify.code !== prod.code && !this.isValidCode(objectModify.code, allProducts)){
+                        if (objectModify.code !== prod.code && !this.#isValidCode(objectModify.code, allProducts)){
                             codeExist = true;
                             return false;
                         }
@@ -111,16 +111,16 @@ export class ProductManager {
 
                 if (productExist){
                     if (codeExist){
-                        return {error: true, message:`Error: Codigo ${objectModify.code} ya existente`};
+                        throw new Error(`Error: Codigo ${objectModify.code} ya existente`);
                     } else {
                         await fs.promises.writeFile(this.path, JSON.stringify(allProducts, null, '\t'));
-                        return {error: false, product: {...objectModify, id}};
+                        return {...objectModify, id};
                     }
                 } else {
-                    return {error: true, message:`Id no encontrado`};
+                    throw new Error(`Id no encontrado`);
                 }
             } else {
-                return {error: true, message:'Faltan datos'};
+                throw new Error('Faltan datos');
             } 
         } catch (error) {
             throw new Error(error.message);
@@ -135,9 +135,9 @@ export class ProductManager {
             if (deleteP){
                 products = products.filter(prod => prod.id !== id);
                 await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-                return {error: false, product: deleteP};
+                return  deleteP;
             } else {
-                return {error: true, message:`Id no encontrado`};
+                throw new Error(`Id no encontrado`);
             }
         } catch (error){
             throw new Error(error.message);

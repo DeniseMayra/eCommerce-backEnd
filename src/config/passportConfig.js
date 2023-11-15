@@ -2,10 +2,10 @@ import passport from 'passport';
 import localStrategy from 'passport-local';
 import githubStrategy from 'passport-github2';
 import jwt from 'passport-jwt';
-import { usersModel } from '../dao/mongo/models/users.model.js';
 import { createHash, isValidPassword } from '../utils.js';
 import { config } from './config.js';
-import { cartsService } from '../dao/mongo/services.js';
+import { CartsService } from '../services/carts.service.js';
+import { UserService } from '../services/users.service.js';
 
 const JWTStrategy = jwt.Strategy;
 const extractJWT = jwt.ExtractJwt;
@@ -21,19 +21,19 @@ export const initializePassport = () => {
     },
     async (req, username, password, done) => { // done(error, usuario)
       try {
-        const user = await usersModel.findOne({email: username});
+        const user = await UserService.findByEmail(username);
 
         if ( user ){
           return done(null, false);
         }
 
-        const cart = await cartsService.createCart(); //object
+        const cart = await CartsService.create() //object
         
         let newUser = req.body;
         newUser.email = username;
         newUser.cartId = cart._id;
         newUser.password = createHash(password);
-        const userCreated = await usersModel.create(newUser);
+        const userCreated = await UserService.create(newUser);
         return done(null, userCreated);
 
       } catch (error) {
@@ -46,7 +46,7 @@ export const initializePassport = () => {
     { usernameField: 'email'},
     async ( username, password, done) => {
       try {
-        const user = await usersModel.findOne({email: username});
+        const user = await UserService.findByEmail(username);
         if ( !user ){
           return done(null, false);
         }
@@ -88,13 +88,13 @@ export const initializePassport = () => {
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const user = await usersModel.findOne({last_name: profile.username});
+        const user = await UserService.findByEmail(profile.username);
 
         if ( user ){
           return done(null, user); // si esta registrado se loguea
         }
 
-        const cart = await cartsService.createCart(); //object
+        const cart = await CartsService.create(); //object
 
         const newUser = {
           first_name: profile.displayName,
@@ -106,7 +106,7 @@ export const initializePassport = () => {
           cartId: cart._id
         };
 
-        const userCreated = await usersModel.create(newUser);
+        const userCreated = await UserService.create(newUser);
         return done(null, userCreated);
         
       } catch (error) {

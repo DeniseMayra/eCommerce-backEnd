@@ -17,7 +17,6 @@ export class ProductManagerMongo {
 
   getProducts = async(query, paginationOptions ) => {
     try{
-      // const result = await this.model.find().lean();
       const result = await this.model.paginate(query, {...paginationOptions, lean: true});
       return result;
 
@@ -42,7 +41,6 @@ export class ProductManagerMongo {
 
   updateProduct = async (id, objectModify) => {
     try {
-      // new:true me devuelve el producto ya modificado
       // si paso un solo dato tendria que hacer .updateOne({_id:id}, {$set filtrado}) porque findeandup se actualiza todo el doc, hay que pasar todos los datos
       const result = await this.model.findByIdAndUpdate( id, objectModify, {new:true});
       return result;
