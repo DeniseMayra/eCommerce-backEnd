@@ -1,11 +1,4 @@
-import { productsDAOfs } from '../dao/dao-fs-manager.js';
-import { productsDAOmongo } from '../dao/dao-mongo-manager.js';
-
-const mongo = true;
-let daoManager = productsDAOmongo;
-if (!mongo){
-  daoManager = productsDAOfs;
-}
+import { productsDAO } from '../dao/dao-manager.js';
 
 export class ProductsService {
 
@@ -14,19 +7,19 @@ export class ProductsService {
   // }
 
   static getById(pid) {
-    return daoManager.getProductById(pid);
+    return productsDAO.getProductById(pid);
   }
 
   static addProduct(product) {
-    return daoManager.addProduct(product);
+    return productsDAO.addProduct(product);
   }
 
   static update(pid, newProduct){ 
-    return daoManager.updateProduct(pid, newProduct);
+    return productsDAO.updateProduct(pid, newProduct);
   }
   
   static delete(pid){
-    return daoManager.deleteProduct(pid);
+    return productsDAO.deleteProduct(pid);
   }
 
   static getProductsMongo = async (req) => {
@@ -37,7 +30,7 @@ export class ProductsService {
       page,
       sort: {price: sort},
     };
-    const result = await daoManager.getProducts( query, paginattionOpt ); //array
+    const result = await productsDAO.getProducts( query, paginattionOpt ); //array
   
     const baseUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   

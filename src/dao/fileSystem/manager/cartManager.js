@@ -105,7 +105,8 @@ export class CartManager {
     try {
       // To Do: delete functionality
       const result = await this.getProductByCartId(cid);
-      
+      return result;
+
     } catch (error) {
       throw new Error(error.message);
     }

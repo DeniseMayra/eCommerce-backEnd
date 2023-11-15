@@ -1,13 +1,12 @@
-import { usersDAOmongo } from '../dao/dao-mongo-manager.js';
-
+import { usersDAO } from '../dao/dao-manager.js';
 
 export class UserService {
 
   static findByEmail(email) {
-    return usersDAOmongo.findByEmail(email);
+    return usersDAO.findByEmail(email);
   }
 
   static create(user) {
-    return usersDAOmongo.createNewUser(user);
+    return usersDAO.createNewUser(user);
   }
 }
