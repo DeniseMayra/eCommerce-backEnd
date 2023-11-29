@@ -17,5 +17,17 @@ export const config = {
   },
   token:{
     secretToken: process.env.SECRET_JSONWEBTOKEN
+  },
+  gmail:{
+    account: process.env.GMAIL_ACCOUNT,
+    password: process.env.GMAIL_PASS
+  },
+  twilio: {
+    account: process.env.TWILIO_ACCOUNT_ID,
+    token: process.env.TWILIO_TOKEN,
+    phone: process.env.TWILIO_PHONE,
+  },
+  client: {
+    phone: process.env.CLIENT_PHONE
   }
 };
