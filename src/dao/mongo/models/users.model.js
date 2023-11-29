@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { COLLECTION_CARTS, COLLECTION_USERS, ROLE_ADMIN, ROLE_USER } from "../../../clases/constant.js";
 
-const usersCollection = 'users';
+const usersCollection = COLLECTION_USERS;
 
 const usersSchema = new mongoose.Schema({
   first_name: {
@@ -20,12 +21,12 @@ const usersSchema = new mongoose.Schema({
   },
   cartId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'carts'
+    ref: COLLECTION_CARTS
   },
   role: {
     type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
+    enum: [ROLE_USER, ROLE_ADMIN],
+    default: ROLE_USER
   }
 });
 

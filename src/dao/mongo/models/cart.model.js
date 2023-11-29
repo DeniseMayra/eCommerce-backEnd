@@ -1,6 +1,7 @@
 import { mongoose } from 'mongoose';
+import { COLLECTION_CARTS, COLLECTION_PRODUCTS } from '../../../clases/constant.js';
 
-const cartCollection = 'carts';
+const cartCollection = COLLECTION_CARTS;
 
 const cartSchema = new mongoose.Schema({ 
   products: {
@@ -8,7 +9,7 @@ const cartSchema = new mongoose.Schema({
       {
         product: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'products'
+          ref: COLLECTION_PRODUCTS
         },
         quantity: {
           required: true,

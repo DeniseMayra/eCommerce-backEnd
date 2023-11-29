@@ -6,6 +6,7 @@ import { createHash, isValidPassword } from '../utils.js';
 import { config } from './config.js';
 import { CartsService } from '../services/carts.service.js';
 import { UserService } from '../services/users.service.js';
+import { ROLE_USER } from '../clases/constant.js';
 
 const JWTStrategy = jwt.Strategy;
 const extractJWT = jwt.ExtractJwt;
@@ -102,7 +103,7 @@ export const initializePassport = () => {
           email: profile._json.email,
           age: null,
           password: createHash(profile.id),
-          role: 'user',
+          role: ROLE_USER,
           cartId: cart._id
         };
 

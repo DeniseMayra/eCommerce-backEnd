@@ -1,7 +1,8 @@
 import { mongoose } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { COLLECTION_PRODUCTS, PRODUCTS_CATEGORY_ACCESORIES, PRODUCTS_CATEGORY_MOTORCYCLE } from '../../../clases/constant.js';
 
-const prodCollection = 'products';
+const prodCollection = COLLECTION_PRODUCTS;
 
 const prodSchema = new mongoose.Schema({
   title: {
@@ -24,7 +25,7 @@ const prodSchema = new mongoose.Schema({
   category: {
     required: true,
     type: String,
-    enums: ['mtc', 'acc'],
+    enums: [PRODUCTS_CATEGORY_MOTORCYCLE, PRODUCTS_CATEGORY_ACCESORIES],
     index: true
   },
   code: {

@@ -1,6 +1,7 @@
 import { mongoose } from 'mongoose';
+import { COLLECTION_MESSAGES } from '../../../clases/constant.js';
 
-const messageCollection = 'messages';
+const messageCollection = COLLECTION_MESSAGES;
 
 const messageSchema = new mongoose.Schema({ 
   user: {
