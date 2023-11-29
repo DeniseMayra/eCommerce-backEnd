@@ -15,6 +15,16 @@ export class ProductManagerMongo {
     }
   }
 
+  getProductsArray = async () => {
+    try {
+      const result = await this.model.find();
+      return result;
+      
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   getProducts = async(query, paginationOptions ) => {
     try{
       const result = await this.model.paginate(query, {...paginationOptions, lean: true});

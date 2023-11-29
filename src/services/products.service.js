@@ -2,9 +2,9 @@ import { productsDAO } from '../dao/dao-manager.js';
 
 export class ProductsService {
 
-  // static getProducts(req) {
-  //   return this.getProductsMongo(req)
-  // }
+  static getProductsArray(req) {
+    return productsDAO.getProductsArray();
+  }
 
   static getById(pid) {
     return productsDAO.getProductById(pid);

@@ -1,7 +1,7 @@
 import { cartsDAO } from '../dao/dao-manager.js';
 
 export class CartsService {
-
+// usa funcion flecha
   static create() {
     return cartsDAO.createCart();
   }

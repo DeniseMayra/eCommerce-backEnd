@@ -51,6 +51,18 @@ export class ProductManager {
         }
     }
 
+    
+  getProductsArray = async () => {
+    try {
+      const result = await this.getProducts();
+      return result;
+      
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+
     getProducts = async() => {
         try{
             const allProducts =  await fs.promises.readFile(this.path, 'utf-8');
