@@ -19,3 +19,6 @@
 
 6. Reestructura de nuestro servidor
 > Refactor app > router > controller > service > dao - Factory Manager 
+
+7. Tercera entrega
+> Middleware de autorizacion segun rol del usuario. Implementacion de mailing, envio de tiket de compra por email registrado.
