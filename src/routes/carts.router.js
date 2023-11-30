@@ -11,13 +11,13 @@ router.get('/:cid', CartsController.getById);
 
 router.post('/:cid/products/:pid', authenticate('jwtAuth'), authorize(ROLE_USER), CartsController.addProduct);
 
-router.delete('/:cid/products/:pid', authenticate('jwtAuth'), authorize(ROLE_USER), CartsController.addProduct);
+router.delete('/:cid/products/:pid', authenticate('jwtAuth'), authorize(ROLE_USER), CartsController.deleteProduct);
 
 router.get('/', CartsController.getAllCarts);
 
 router.delete('/:id', CartsController.deleteCart);
 
-router.post('/:cid/purchase', CartsController.purchaseCart);
+router.post('/:cid/purchase', authenticate('jwtAuth'), CartsController.purchaseCart);
 
 router.get('/tickets', CartsController.getTickets);
 
