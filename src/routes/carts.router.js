@@ -9,9 +9,9 @@ router.post('/', CartsController.create);
 
 router.get('/:cid', CartsController.getById);
 
-router.post('/:cid/products/:pid', authenticate('jwtAuth'), authorize(ROLE_USER), CartsController.addProduct);
+router.post('/:cid/products/:pid', authenticate('jwtAuth'), authorize([ROLE_USER]), CartsController.addProduct);
 
-router.delete('/:cid/products/:pid', authenticate('jwtAuth'), authorize(ROLE_USER), CartsController.deleteProduct);
+router.delete('/:cid/products/:pid', authenticate('jwtAuth'), authorize([ROLE_USER]), CartsController.deleteProduct);
 
 router.get('/', CartsController.getAllCarts);
 

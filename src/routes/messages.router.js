@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/', MessagesController.getMessages);
 
-router.post('/', authenticate('jwtAuth'), authorize(ROLE_USER), MessagesController.newMessage);
+router.post('/', authenticate('jwtAuth'), authorize([ROLE_USER]), MessagesController.newMessage);
 
 router.delete('/:id', MessagesController.delete);
 

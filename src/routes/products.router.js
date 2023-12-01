@@ -9,10 +9,10 @@ router.get('/', ProductsController.getProducts);
 
 router.get('/:pid', ProductsController.getById);
 
-router.post('/', authenticate('jwtAuth'), authorize(ROLE_ADMIN), ProductsController.addProduct);
+router.post('/', authenticate('jwtAuth'), authorize([ROLE_ADMIN]), ProductsController.addProduct);
 
-router.put('/:id', authenticate('jwtAuth'), authorize(ROLE_ADMIN), ProductsController.update);
+router.put('/:id', authenticate('jwtAuth'), authorize([ROLE_ADMIN]), ProductsController.update);
 
-router.delete('/:id', authorize(ROLE_ADMIN), ProductsController.delete);
+router.delete('/:id', authorize([ROLE_ADMIN]), ProductsController.delete);
 
 export { router as productsRouter };
