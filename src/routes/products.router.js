@@ -15,4 +15,6 @@ router.put('/:id', authenticate('jwtAuth'), authorize([ROLE_ADMIN]), ProductsCon
 
 router.delete('/:id', authorize([ROLE_ADMIN]), ProductsController.delete);
 
+router.post('/mockingproducts', ProductsController.productsMock);
+
 export { router as productsRouter };

@@ -1,0 +1,6 @@
+export const ErrorEnum = {
+  DATABASE_ERROR: 1,
+  INVALID_BODY_JSON: 2,
+  AUTHENTICATE_ERROR: 3,
+  AUTHORIZE_ERROR: 4
+}

@@ -30,13 +30,18 @@ export class CartsController {
   static addProduct = async (req,res) => {
     try{
       const { quantity } = req.body;
-      const newProduct = {
-        product: req.params.pid,
-        quantity: quantity ?? 1
-      };
-      const result = await CartsService.addProduct(req.params.cid, newProduct); //object
-      res.json({error: false, data: result, message: ''});
-  
+
+      const productRes = await ProductsService.getById(req.params.pid);
+      if ( productRes ){
+        
+        const newProduct = {
+          product: req.params.pid,
+          quantity: quantity ?? 1
+        };
+        const result = await CartsService.addProduct(req.params.cid, newProduct); //object
+        res.json({error: false, data: result, message: ''});
+      }
+
     } catch (error) {
       res.status(500).json({error: true, data: null, message: error.message});
     }

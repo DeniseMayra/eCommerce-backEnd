@@ -1,3 +1,5 @@
+
+import { CustomErrorService } from '../../../services/customError.service.js';
 import { productModel } from '../models/product.model.js';
 
 export class ProductManagerMongo {
@@ -11,7 +13,7 @@ export class ProductManagerMongo {
       return result;
 
     } catch (error) {
-      throw new Error(error.message);
+      CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
     }
   }
 
@@ -21,7 +23,7 @@ export class ProductManagerMongo {
       return result;
       
     } catch (error) {
-      throw new Error(error.message);
+      CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
     }
   }
 
@@ -31,7 +33,7 @@ export class ProductManagerMongo {
       return result;
 
     } catch (error) {
-      throw new Error(error.message);
+      CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
     }
   }
 
@@ -42,9 +44,9 @@ export class ProductManagerMongo {
 
     } catch (error) {
       if (error.kind === 'ObjectId') {
-        throw new Error('Id no encontrado');
+        CustomErrorService.createIdNotFoundError(error.value);
       } else {
-        throw new Error(error.message);
+        CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
       }
     }
   }
@@ -57,9 +59,9 @@ export class ProductManagerMongo {
 
     } catch (error) {
       if (error.kind === 'ObjectId') {
-        throw new Error('Id no encontrado');
+        CustomErrorService.createIdNotFoundError(id);
       } else {
-        throw new Error(error.message);
+        CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
       }
     }
   }
@@ -71,9 +73,9 @@ export class ProductManagerMongo {
 
     } catch (error){
       if (error.kind === 'ObjectId') {
-        throw new Error('Id no encontrado');
+        CustomErrorService.createIdNotFoundError(id);
       } else {
-        throw new Error(error.message);
+        CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
       }
     }
   }

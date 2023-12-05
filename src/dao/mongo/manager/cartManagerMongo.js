@@ -1,3 +1,4 @@
+import { CustomErrorService } from '../../../services/customError.service.js';
 import { cartModel } from '../models/cart.model.js';
 
 export class CartManagerMongo {
@@ -12,7 +13,8 @@ export class CartManagerMongo {
       return result;
 
     } catch (error) {
-      throw new Error(error.message);
+      CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
+
     }
   }
 
@@ -22,7 +24,8 @@ export class CartManagerMongo {
       return result;
 
     } catch (error) {
-      throw new Error(error.message);
+      CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
+
     }
   }
 
@@ -33,9 +36,10 @@ export class CartManagerMongo {
 
     } catch (error) {
       if (error.kind === 'ObjectId') {
-        throw new Error('Id no encontrado');
+        CustomErrorService.createIdNotFoundError(error.value);
       } else {
-        throw new Error(error.message);
+        CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
+
       }
     }
   }
@@ -61,9 +65,10 @@ export class CartManagerMongo {
 
     } catch (error) {
       if (error.kind === 'ObjectId') {
-        throw new Error('Id no encontrado');
+        CustomErrorService.createIdNotFoundError(error.value);
       } else {
-        throw new Error(error.message);
+        CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
+
       }
     }
   }
@@ -78,9 +83,9 @@ export class CartManagerMongo {
       
     } catch (error) {
       if (error.kind === 'ObjectId') {
-        throw new Error('Id no encontrado');
+        CustomErrorService.createIdNotFoundError(error.value);
       } else {
-        throw new Error(error.message);
+        CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
       }
     }
   }
@@ -92,9 +97,9 @@ export class CartManagerMongo {
 
     } catch (error){
       if (error.kind === 'ObjectId') {
-        throw new Error('Id no encontrado');
+        CustomErrorService.createIdNotFoundError(error.value);
       } else {
-        throw new Error(error.message);
+        CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
       }
     }
   }
