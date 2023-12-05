@@ -22,3 +22,6 @@
 
 7. Tercera entrega
 > Middleware de autorizacion segun rol del usuario. Implementacion de mailing, envio de tiket de compra por email registrado.
+
+8. Mocking y Manejo de Errores
+> Usando la dependencia faker para crear mock de productos
