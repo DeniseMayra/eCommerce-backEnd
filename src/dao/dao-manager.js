@@ -1,4 +1,5 @@
 import { config } from '../config/config.js';
+import { logger } from '../helpers/logger.js';
 import { TicketManagerMongo } from './mongo/manager/ticketManagerMongo.js';
 
 let cartsDAO;
@@ -8,6 +9,7 @@ let usersDAO;
 let ticketDAO;
 
 const persistence = config.server.persistence;
+logger.debug(`Persistencia: ${persistence}`);
 
 switch(persistence){
   case 'mongo':

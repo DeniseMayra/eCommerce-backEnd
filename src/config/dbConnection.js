@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { config } from './config.js';
+import { logger } from '../helpers/logger.js';
 
 export class DbConection {
   static #instance
@@ -10,10 +11,10 @@ export class DbConection {
   
   static getInstance() {
     if (this.#instance){
-      console.log('Db ya conectada');
+      logger.info('Db ya conectada');
     } else {
       this.#instance = this.#connect();
-      console.log('DB conectada');
+      logger.info('DB conectada');
     }
     return this.#instance;
   }

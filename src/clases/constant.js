@@ -12,3 +12,6 @@ export const ROLE_ADMIN = 'admin';
 
 export const PRODUCTS_CATEGORY_MOTORCYCLE = 'mtc';
 export const PRODUCTS_CATEGORY_ACCESORIES = 'acc';
+
+export const NODE_DEVELOPMENT = 'dev';
+export const NODE_PRODUCTION = 'prod';

@@ -11,7 +11,6 @@ export class MessageManagerMongo {
       return result;
 
     } catch (error) {
-      console.log(error);
       throw new Error(error.message);
     }
   }

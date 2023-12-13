@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { NODE_DEVELOPMENT } from '../clases/constant.js';
 
 dotenv.config();
 
@@ -29,5 +30,8 @@ export const config = {
   },
   client: {
     phone: process.env.CLIENT_PHONE
+  },
+  node: {
+    env: process.env.NODE_ENVIROMENT || NODE_DEVELOPMENT
   }
 };

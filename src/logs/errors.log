@@ -1,0 +1,5 @@
+{"level":"info","message":"Server funcionando en el puerto 8080"}
+{"level":"fatal","message":"Log Error fatal"}
+{"level":"error","message":"Log Error error"}
+{"level":"warning","message":"Log Error warning"}
+{"level":"info","message":"Log Error info"}

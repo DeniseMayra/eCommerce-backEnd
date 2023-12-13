@@ -1,7 +1,8 @@
 import { ErrorEnum } from '../enums/error.enum.js';
+import { logger } from '../helpers/logger.js';
 
 export const errorHandler = (error, req,res,next) => {
-  console.log(error);
+  logger.error(error);
 
   switch ( error.code ){
     case ErrorEnum.DATABASE_ERROR:

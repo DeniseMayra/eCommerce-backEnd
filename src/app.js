@@ -12,6 +12,7 @@ import { messageRouter } from './routes/messages.router.js';
 import { viewsPassportRouter } from './routes/views-passport.router.js';
 import { sessionPassportRouter } from './routes/session-passport.router.js';
 import { initializePassport } from './config/passportConfig.js';
+import { logger } from './helpers/logger.js';
 
 
 // ---------- CONFIG ----------
@@ -48,4 +49,16 @@ app.get('*', (req,res) => res.render('notFound'));
 
 
 // ---------- SERVER ----------
-app.listen(port, () => console.log('Server funcionando en el puerto ' + port));
+app.listen(port, () => logger.info('Server funcionando en el puerto ' + port));
+
+app.post('/loggerTest', (req,res) => {
+  logger.fatal('Log Error fatal');
+  logger.error('Log Error error');
+  logger.warning('Log Error warning');
+  logger.info('Log Error info');
+  logger.http('Log Error http');
+  logger.debug('Log Error debug');
+
+  res.send('Testing logger');
+})
+
