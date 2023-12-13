@@ -25,3 +25,6 @@
 
 8. Mocking y Manejo de Errores
 > Usando la dependencia faker para crear mock de productos
+
+9. Implementacion del logger
+> Uso de la dependencia Winston para creacion de loggers (dev/prod) modo prod persistencia en archivo 'logs/errors.json'
