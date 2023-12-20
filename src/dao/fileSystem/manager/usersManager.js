@@ -56,4 +56,14 @@ export class UserManager {
       throw new Error(error.message);
     }
   };
+
+  updateUser = async(newUser) => {
+    try {
+      // To Do
+      return user[0];
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }

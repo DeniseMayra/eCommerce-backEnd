@@ -21,7 +21,8 @@ export const config = {
   },
   gmail:{
     account: process.env.GMAIL_ACCOUNT,
-    password: process.env.GMAIL_PASS
+    password: process.env.GMAIL_PASS,
+    token: process.env.GMAIL_TOKEN
   },
   twilio: {
     account: process.env.TWILIO_ACCOUNT_ID,

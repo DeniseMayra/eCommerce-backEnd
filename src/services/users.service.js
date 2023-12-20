@@ -9,4 +9,8 @@ export class UserService {
   static create(user) {
     return usersDAO.createNewUser(user);
   }
+
+  static update(uid, newUser){ 
+    return usersDAO.updateUser(uid, newUser);
+  }
 }

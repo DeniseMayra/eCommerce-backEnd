@@ -1,4 +1,6 @@
-import { generateToken } from '../utils.js';
+import { generateEmailToken, sendChangePasswordEmail, verifyEmailToken } from '../helpers/email.js';
+import { UserService } from '../services/users.service.js';
+import { createHash, generateToken, isValidPassword } from '../utils.js';
 
 
 export class UserController {
@@ -31,6 +33,53 @@ export class UserController {
       res.render('profile', {error: true, message: error.message});
     }
   };
+
+  static forgotPassword = async (req,res) => {
+    try {
+      const { userEmail } = req.body;
+      const user = await UserService.findByEmail(userEmail);
+
+      if ( !user ){
+        res.render('login', {error: true, message: 'Operacion no valida'});
+      } else {
+        const emailToken = generateEmailToken(userEmail, 5*60); //en segundos
+    
+        await sendChangePasswordEmail(req, userEmail, emailToken);
+        res.send('se envio enlace al correo, <a href="/login">volver a login</a>');
+      }
+
+    } catch (error) {
+      res.json({error: true, message: error.message});
+    }
+  }
+
+  static resetPassword = async (req,res) => {
+    try {
+      const { newPassword } = req.body;
+      const { token } = req.query;
+      const validEmail = verifyEmailToken(token);
+  
+      if ( validEmail ){
+        const user = await UserService.findByEmail(validEmail);
+  
+        if ( !user ) res.render('login', {error: true, message: 'Operacion no valida'});
+  
+        if ( isValidPassword(newPassword, user) ){
+          res.render('resetPassView', {error: true, message: 'No se pudo concretar la operacion', token});
+        } else {
+          const userData = { ...user, password: createHash(newPassword) };
+          await UserService.update(user._id, userData);
+          res.render('login')
+        }
+  
+      } else {
+        res.send('Enlace no valido, <a href="/forgot-password">genere un nuevo enlace</a>');
+      }
+      
+    } catch (error) {
+      res.json({error: true, message: error.message});
+    }
+  }
 
 
   // ---------- SESSION WITH GITHUB ----------

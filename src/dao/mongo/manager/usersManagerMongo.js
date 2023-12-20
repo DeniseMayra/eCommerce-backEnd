@@ -1,6 +1,7 @@
 import { usersModel } from '../models/users.model.js';
 import { SUCCESS, ERROR } from '../../../clases/constant.js';
 import { createHash, isValidPassword } from '../../../utils.js';
+import { CustomErrorService } from '../../../services/customError.service.js';
 
 export class UsersManagerMongo {
   constructor() {
@@ -37,7 +38,7 @@ export class UsersManagerMongo {
 
   findByEmail = async (email) => {
     try {
-      const result = await this.model.findOne({email});
+      const result = await this.model.findOne({email}).lean();
       return result;
 
     } catch (error) {
@@ -52,6 +53,20 @@ export class UsersManagerMongo {
       
     } catch (error) {
       throw new Error(error.message);
+    }
+  }
+
+  updateUser = async (id, userModify) => {
+    try {
+      const result = await this.model.findByIdAndUpdate( id, userModify, {new:true});
+      return result;
+
+    } catch (error) {
+      if (error.kind === 'ObjectId') {
+        CustomErrorService.createIdNotFoundError(id);
+      } else {
+        CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
+      }
     }
   }
 };

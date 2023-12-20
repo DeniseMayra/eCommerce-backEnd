@@ -32,4 +32,13 @@ router.get('/signup', (req,res) => {
   res.render('signup');
 });
 
+router.get('/forgot-password', (req,res) => {
+  res.render('forgotPassView');
+});
+
+router.get('/reset-password', (req,res) => {
+  const token = req.query.token;
+  res.render('resetPassView', {token});
+});
+
 export { router as viewsPassportRouter};
