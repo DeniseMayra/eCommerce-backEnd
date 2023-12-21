@@ -22,6 +22,7 @@ export const generateToken = (user) => {
     first_name: user.first_name,
     email: user.email,
     cartId: user.cartId,
+    _id: user._id,
     role: user.role
   };
   const token = jwt.sign(userData, config.token.secretToken, {expiresIn:'24h'});

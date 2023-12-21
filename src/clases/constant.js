@@ -9,6 +9,7 @@ export const COLLECTION_TICKETS = 'tickets';
 
 export const ROLE_USER = 'user';
 export const ROLE_ADMIN = 'admin';
+export const ROLE_PREMIUM = 'premium';
 
 export const PRODUCTS_CATEGORY_MOTORCYCLE = 'mtc';
 export const PRODUCTS_CATEGORY_ACCESORIES = 'acc';

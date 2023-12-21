@@ -46,6 +46,16 @@ export class UsersManagerMongo {
     }
   }
 
+  findById = async (id) => {
+    try {
+      const result = await this.model.findById(id).lean();
+      return result;
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   createNewUser = async(newUser) => {
     try {
       const result = await this.model.create(newUser);

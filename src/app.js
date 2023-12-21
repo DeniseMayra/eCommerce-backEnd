@@ -13,6 +13,7 @@ import { viewsPassportRouter } from './routes/views-passport.router.js';
 import { sessionPassportRouter } from './routes/session-passport.router.js';
 import { initializePassport } from './config/passportConfig.js';
 import { logger } from './helpers/logger.js';
+import { usersRouter } from './routes/users.router.js';
 
 
 // ---------- CONFIG ----------
@@ -34,6 +35,7 @@ DbConection.getInstance();
 app.use('/api/carts', cartsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/message', messageRouter);
+app.use('/api/users', usersRouter);
 
 app.use('/', viewsPassportRouter);
 app.use('/api/sessions', sessionPassportRouter);

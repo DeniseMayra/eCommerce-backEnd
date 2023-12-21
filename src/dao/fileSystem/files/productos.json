@@ -10,7 +10,8 @@
 		"stock": 10,
 		"category": "mtc",
 		"code": "0111",
-		"_id": "ae4fc424-1070-4ba7-a9bc-39727c9daaa2"
+		"_id": "ae4fc424-1070-4ba7-a9bc-39727c9daaa2",
+		"owner": "654abcdc2495146fc5609845"
 	},
 	{
 		"title": "Kawasaki Z650",
@@ -23,7 +24,8 @@
 		"stock": 8,
 		"category": "mtc",
 		"code": "0222",
-		"_id": "ad9f9777-b075-4c50-a48e-aa07839d4a8d"
+		"_id": "ad9f9777-b075-4c50-a48e-aa07839d4a8d",
+		"owner": "654abcdc2495146fc5609845"
 	},
 	{
 		"title": "Yamaha YZF-R3",
@@ -36,7 +38,8 @@
 		"stock": 15,
 		"category": "mtc",
 		"code": "0333",
-		"_id": "57d8d87b-24f8-49d5-a1cb-93299ff6ffaf"
+		"_id": "57d8d87b-24f8-49d5-a1cb-93299ff6ffaf",
+		"owner": "654abcdc2495146fc5609845"
 	},
 	{
 		"title": "Casco Smk",
@@ -49,7 +52,8 @@
 		"stock": 22,
 		"category": "acc",
 		"code": "1111",
-		"_id": "4e36c059-47aa-46c4-bfc6-be6fd3f59c2b"
+		"_id": "4e36c059-47aa-46c4-bfc6-be6fd3f59c2b",
+		"owner": "654abcdc2495146fc5609845"
 	},
 	{
 		"title": "Casco MT",
@@ -62,6 +66,7 @@
 		"stock": 10,
 		"category": "acc",
 		"code": "1112",
-		"_id": "483ffdba-0fb2-474e-ab48-5649f0edc2ed"
+		"_id": "483ffdba-0fb2-474e-ab48-5649f0edc2ed",
+		"owner": "654abcdc2495146fc5609845"
 	}
 ]

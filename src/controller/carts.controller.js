@@ -4,6 +4,7 @@ import { ProductsService } from '../services/products.service.js';
 import { TicketsService } from '../services/tickets.service.js';
 import { transport } from '../config/gmail.js';
 import { config } from '../config/config.js';
+import { ROLE_PREMIUM } from '../clases/constant.js';
 
 export class CartsController {
 
@@ -30,16 +31,19 @@ export class CartsController {
   static addProduct = async (req,res) => {
     try{
       const { quantity } = req.body;
-
       const productRes = await ProductsService.getById(req.params.pid);
       if ( productRes ){
-        
-        const newProduct = {
-          product: req.params.pid,
-          quantity: quantity ?? 1
-        };
-        const result = await CartsService.addProduct(req.params.cid, newProduct); //object
-        res.json({error: false, data: result, message: ''});
+        if ( req.user.role === ROLE_PREMIUM && productRes.owner == req.user._id ){
+          res.json({error: false, data: productRes, message: 'No es posible agregar el producto'});
+
+        } else {
+          const newProduct = {
+            product: req.params.pid,
+            quantity: quantity ?? 1
+          };
+          const result = await CartsService.addProduct(req.params.cid, newProduct); //object
+          res.json({error: false, data: result, message: ''});
+        }
       }
 
     } catch (error) {

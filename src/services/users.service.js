@@ -13,4 +13,8 @@ export class UserService {
   static update(uid, newUser){ 
     return usersDAO.updateUser(uid, newUser);
   }
+
+  static findById(id){
+    return usersDAO.findById(id);
+  }
 }

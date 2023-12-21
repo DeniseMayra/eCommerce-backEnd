@@ -1,3 +1,4 @@
+import { ROLE_PREMIUM, ROLE_USER } from '../clases/constant.js';
 import { generateEmailToken, sendChangePasswordEmail, verifyEmailToken } from '../helpers/email.js';
 import { UserService } from '../services/users.service.js';
 import { createHash, generateToken, isValidPassword } from '../utils.js';
@@ -107,5 +108,26 @@ export class UserController {
 
   static notFound = (req,res) => {
     res.render('notFound');
+  };
+
+
+  // ---------- ENDPOINTS ----------
+  static modifyRole = async (req,res) => {
+    try {
+      const user = await UserService.findById(req.params.uid);
+      
+      if ( user.role === ROLE_PREMIUM ){
+        user.role = ROLE_USER;
+      } else if ( user.role === ROLE_USER){
+        user.role = ROLE_PREMIUM;
+      } else {
+        res.json({error: true, data: user, message: 'No se puede cambiar el rol'});
+      }
+      await UserService.update(user._id, user);
+      res.json({error: false, data: user, message: 'Rol del usuario modificado'});
+
+    } catch (error) {
+      res.status(500).json({error: true, data: null, message: error.message});
+    }
   };
 }

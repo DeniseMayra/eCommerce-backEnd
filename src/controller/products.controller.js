@@ -3,6 +3,7 @@ import { CustomErrorService } from '../services/customError.service.js';
 import { productRequired } from '../services/errorCauses.service.js';
 import { ProductsService } from '../services/products.service.js';
 import { generateProducts } from '../assets/mocks/productMock.js';
+import { ROLE_ADMIN, ROLE_PREMIUM } from '../clases/constant.js';
 
 export class ProductsController {
 
@@ -28,12 +29,14 @@ export class ProductsController {
 
   static addProduct = async(req,res) => {
     try{
-      if (!req.body.title || !req.body.price || !req.body.stock || !req.body.category || !req.body.code){
+      const product = req.body;
+      if (!product.title || !product.price || !product.stock || !product.category || !product.code){
         CustomErrorService.createError({name: 'Create Product Error', cause:'Falta uno o mas campos',
-          message: productRequired(req.body), errorCode: ErrorEnum.INVALID_BODY_JSON})
+          message: productRequired(product), errorCode: ErrorEnum.INVALID_BODY_JSON})
       }
+      product.owner = req.user._id;
 
-      const result = await ProductsService.addProduct(req.body); //object
+      const result = await ProductsService.addProduct(product); //object
       res.json({error: false, data: result, message: ''});
   
     } catch (error) {
@@ -53,9 +56,15 @@ export class ProductsController {
 
   static delete = async(req,res) => {
     try{
-      const result = await ProductsService.delete(req.params.id);  //objeto eliminado
-      res.json({error: false, data: result, message: ''});
-  
+      const product = await ProductsService.getById(req.params.id);
+      if ( req.user.role === ROLE_PREMIUM && product.owner === req.user._id || req.user.role === ROLE_ADMIN ){
+        const result = await ProductsService.delete(req.params.id);  //objeto eliminado
+        res.json({error: false, data: result, message: ''});
+
+      } else {
+        res.json({error: true, data: null, message: 'No autorizado a eliminar el producto'});
+      }
+
     } catch (error) {
       res.status(500).json({error: true, data: null, message: error.message});
     }

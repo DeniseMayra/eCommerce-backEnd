@@ -47,6 +47,16 @@ export class UserManager {
     }
   };
 
+  findById = async (email) => {
+    try {
+      // To Do
+      return user[0];
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
   createNewUser = async(newUser) => {
     try {
       // To Do

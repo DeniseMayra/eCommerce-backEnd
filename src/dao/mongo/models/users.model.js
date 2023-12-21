@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { COLLECTION_CARTS, COLLECTION_USERS, ROLE_ADMIN, ROLE_USER } from "../../../clases/constant.js";
+import { COLLECTION_CARTS, COLLECTION_USERS, ROLE_ADMIN, ROLE_PREMIUM, ROLE_USER } from "../../../clases/constant.js";
 
 const usersCollection = COLLECTION_USERS;
 
@@ -25,7 +25,7 @@ const usersSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: [ROLE_USER, ROLE_ADMIN],
+    enum: [ROLE_USER, ROLE_ADMIN, ROLE_PREMIUM],
     default: ROLE_USER
   }
 });
