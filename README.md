@@ -12,19 +12,22 @@
 > Implementacion de singup, login y logout, con sus respectivas vistas condicionales.
 
 4. Desafio Refactor Login
-> Hasheo de password, implementacion de passport, autenticacion con GitHub
+> Hasheo de password, implementacion de passport, autenticacion con GitHub.
 
 5. Integracion 
-> Uso de autenticacion con passport-jwt y manejo de cookies para jsonWebToken
+> Uso de autenticacion con passport-jwt y manejo de cookies para jsonWebToken.
 
 6. Reestructura de nuestro servidor
-> Refactor app > router > controller > service > dao - Factory Manager 
+> Refactor app > router > controller > service > dao - Factory Manager.
 
 7. Tercera entrega
 > Middleware de autorizacion segun rol del usuario. Implementacion de mailing, envio de tiket de compra por email registrado.
 
 8. Mocking y Manejo de Errores
-> Usando la dependencia faker para crear mock de productos
+> Usando la dependencia faker para crear mock de productos.
 
 9. Implementacion del logger
-> Uso de la dependencia Winston para creacion de loggers (dev/prod) modo prod persistencia en archivo 'logs/errors.json'
+> Uso de la dependencia Winston para creacion de loggers (dev/prod) modo prod persistencia en archivo 'logs/errors.json'.
+
+10. Tercera practica integradora
+> Reestablecer contraseña y uso de script.
