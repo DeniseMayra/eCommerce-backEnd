@@ -1,0 +1,297 @@
+paths:
+  /api/carts/:
+    get:
+      summary: Obtener todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carritos existentes en DB (uno por usuario)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+    post:
+      summary: Crear nuevo carrito cuando se registra un nuevo usuario
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carrito creado con cero productos
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtener carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El ID del carrito definido por mongo
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Carrito obtenido en data, respuesta del tipo {error:false, data, message:""} 
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+    delete:
+      summary: Eliminar carrito identificando por ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El ID del carrito para eliminar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Carrito eliminado en data, respuesta del tipo {error:false, data, message:""} 
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Agregar producto al carrito, solo usuarios user y premium
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El ID del carrito donde se añade el producto
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: El ID del producto a comprar
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+                  description: Cantidad del mismo producto
+      responses:
+        "200":
+          description: Producto agregado al carrito en data, respuesta del tipo {error:false, data, message:""} 
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+    delete:
+      summary: Eliminar producto del carrito, solo usuarios con rol user
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El ID del carrito 
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: El ID del producto a eliminar en el carrito
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Producto eliminado del carrito en data, respuesta del tipo {error:false, data, message:""} 
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Finalizar la compra. El usuario tiene que estar autenticado, se le envia un email con la informacion 
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El ID del carrito 
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Compra realizada, informacion endata, respuesta del tipo {error:false, data, message:""} 
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/PurchaseResponse"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+  /api/carts/tickets:
+    get:
+      summary: Obtener todos los tickets de compras finalizadas
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Array de tickets en data, respuesta del tipo {error:false, data, message:""} 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Ticket"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID generado por mongo
+        products:
+          type: object
+          properties:
+            product:
+              type: ObjectId
+              description: ID del producto con populacion del producto
+            quantity:
+              type: number
+      example:
+        _id: ObjectId("ae4fc424-1070-4ba7-a9bc-39727c9daaa2")
+        products: [{product: ObjectId("ae4fc424-1070-4ba7-a9bc-39727c9daaa2"), quantity: 1}]
+
+    Ticket:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Codigo de seguimiento del tipo UUID
+        purchase_datetime:
+          type: string
+          description: Dia y fecha de compra
+        amount: 
+          type: number
+          description: Precio total de compra
+        purchaser:
+          type: string
+          description: Email del usuario
+      example:
+        code: 7557110b-a3ea-46e3-9323-cf29b3cd930d
+        purchase_datetime: 2023-11-28T23:29:28.245Z
+        amount: 100
+        purchaser: dm@gmail.com
+
+    PurchaseResponse:
+      type: object
+      properties:
+        ticket:
+          schema:
+            $ref: "#components/schemas/Ticket"
+        success:
+          type: array
+          items: 
+            type: object
+            properties:
+              product:
+                type: ObjectId
+                description: ID del producto con populacion del producto
+              quantity:
+                type: number
+        reject:
+          type: array
+          items: 
+            type: object
+            properties:
+              product:
+                type: ObjectId
+                description: ID del producto con populacion del producto
+              quantity:
+                type: number
+      example:
+        ticket: {code: 7557110b-a3ea-46e3-9323-cf29b3cd930d, purchase_datetime: 2023-11-28T23:29:28.245Z, amount: 100, purchaser: dm@gmail.com}
+        success: [{product: ObjectId("ae4fc424-1070-4ba7-a9bc-39727c9daaa2"), quantity: 1}]
+        reject: [{product: ObjectId("ae4fc424-1070-4ba7-a9bc-39727c9daaa2"), quantity: 1}]
+
+    ErrorResponse:
+      type: Object
+      properties:
+        error: 
+          type: boolean
+        data:
+          type: null
+        message:
+          type: string
+      example:
+        error: true
+        data: null
+        message: Id no encontrado
+

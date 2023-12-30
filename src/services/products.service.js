@@ -35,7 +35,7 @@ export class ProductsService {
     const baseUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   
     return {
-      status: 'success',
+      error: false,
       payload: result.docs,
       totalPages: result.totalPages, page: result.page, hasPrevPage: result.hasPrevPage, hasNextPage: result.hasNextPage, prevPage: result.prevPage, nextPage: result.nextPage,
       prevLink: result.hasPrevPage ? getPrevLink(baseUrl, result) : null,

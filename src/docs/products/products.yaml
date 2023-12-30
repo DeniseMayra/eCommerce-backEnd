@@ -1,0 +1,284 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtener todos los roductos con paginacion mongo
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Productos obtenidos
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/PaginationProducts"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+  
+    post:
+      summary: Crear nuevo producto solo usuarios admin y premium
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/CreateUpdateProduct"
+      responses:
+        "200":
+          description: Nuevo producto en data, respuesta del tipo {error:false, data, message:""} 
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+  /api/products/{pid}:
+    get:
+      summary: Obtener producto por ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El ID del producto definido por mongo
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Producto obtenido en data, respuesta del tipo {error:false, data, message:""} 
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+    put:
+      summary: Actualizar producto identificando por ID solo usuarios admin y premium
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El Id del producto para actualizar
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/CreateUpdateProduct"
+      responses:
+        "200":
+          description: Producto actualizado en data, respuesta del tipo {error:false, data, message:""} 
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+    delete:
+      summary: Eliminar producto identificando por ID solo usuarios admin y premium
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El Id del producto para eliminar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Producto eliminado en data, respuesta del tipo {error:false, data, message:""} 
+          content: 
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+  /api/products/mockingproducts:
+    post:
+      summary: Obtener 100 mock products aleatorios
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Mock Products
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Problema con el server
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id generado por mongo
+        title: 
+          type: string
+          description: (Required) Titulo del Producto
+        description:
+          type: string
+          description: Descripcion del Producto
+        price: 
+          type: number
+          description: (Required) Precio del Producto
+        status:
+          type: boolean
+          description: No usado aun
+        thumbnails:
+          type: array
+          description: Array de URL
+        stock:
+          type: number
+          description: (required) Cantidad de productos en stock
+        category:
+          type: string
+          description: (required) Categoria del Producto (mtc | acc)
+        code:
+          type: number
+          description: (required) codigo unico
+        owner:
+          type: string
+          description: Id del usuario que creo el producto
+      example:
+        _id: ObjectId("ae4fc424-1070-4ba7-a9bc-39727c9daaa2")
+        title: Kawasaki Ninja 400
+        description: ABS KRT
+        price: 13300
+        status: true
+        thumbnails: [https://www.kawasakinavarro.com.ar/img/motos/kawasaki_ninja_400_navarro_new_4.jpg]
+        stock: 10
+        category: mtc
+        code: 0111
+        owner: 654abcdc2495146fc5609845
+
+    PaginationProducts:
+      type: object
+      properties:
+        error:
+          type: boolean
+        payload:
+          type: array
+          items:
+            $ref: "#components/schemas/Products"
+        totalPages:
+          type: number
+        page:
+          type: number
+          description: pagina actual
+        hasPrevPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
+        prevPage:
+          type: number
+        nextPage:
+          type: number
+        prevLink:
+          type: string
+        nextLink:
+          type: string
+      example:
+        error: false
+        payload: []
+        totalPages: 3
+        page: 3
+        hasPrevPage: true
+        hasNextPage: false
+        prevPage: 2
+        nextPage: null
+        prevLink: http://localhost:8080/api/products/?page=2
+        nextLink: null
+
+    ErrorResponse:
+      type: Object
+      properties:
+        error: 
+          type: boolean
+        data:
+          type: null
+        message:
+          type: string
+      example:
+        error: true
+        data: null
+        message: Id no encontrado
+
+  requestBodies:
+    CreateUpdateProduct:
+      type: object
+      properties:
+        title: 
+          type: string
+          description: (Required) Titulo del Producto
+        description:
+          type: string
+          description: Descripcion del Producto
+        price: 
+          type: number
+          description: (Required) Precio del Producto
+        status:
+          type: boolean
+          description: No usado aun
+        thumbnails:
+          type: array
+          description: Array de URL
+        stock:
+          type: number
+          description: (required) Cantidad de productos en stock
+        category:
+          type: string
+          description: (required) Categoria del Producto (mtc | acc)
+        code:
+          type: number
+          description: (required) codigo unico
+      example:
+        title: Kawasaki Ninja 400
+        description: ABS KRT
+        price: 13300
+        status: true
+        thumbnails: [https://www.kawasakinavarro.com.ar/img/motos/kawasaki_ninja_400_navarro_new_4.jpg]
+        stock: 10
+        category: mtc
+        code: 0111
+

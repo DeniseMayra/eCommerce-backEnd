@@ -13,7 +13,7 @@ export class ProductsController {
       res.json(response);
       
     } catch (error) {
-      res.status(500).json({error: false, payload: null, message: error.message});
+      res.status(500).json({error: true, payload: null, message: error.message});
     }
   };
 

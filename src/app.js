@@ -6,13 +6,16 @@ import cors from 'cors';
 import path from 'path';
 import { __dirname } from './utils.js';
 import { DbConection } from './config/dbConnection.js';
+import { initializePassport } from './config/passportConfig.js';
+import { logger } from './helpers/logger.js';
+import swaggerUI from 'swagger-ui-express';
+import { swaggerSpecs } from './config/swagger.config.js';
+
 import { productsRouter } from './routes/products.router.js';
 import { cartsRouter } from './routes/carts.router.js';
 import { messageRouter } from './routes/messages.router.js';
 import { viewsPassportRouter } from './routes/views-passport.router.js';
 import { sessionPassportRouter } from './routes/session-passport.router.js';
-import { initializePassport } from './config/passportConfig.js';
-import { logger } from './helpers/logger.js';
 import { usersRouter } from './routes/users.router.js';
 
 
@@ -39,6 +42,7 @@ app.use('/api/users', usersRouter);
 
 app.use('/', viewsPassportRouter);
 app.use('/api/sessions', sessionPassportRouter);
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 
 
 // ---------- VIEWS ----------
