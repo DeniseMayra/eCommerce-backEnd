@@ -31,3 +31,6 @@
 
 10. Tercera practica integradora
 > Reestablecer contraseña y uso de script.
+
+11. Documentacion de API
+> Usando la dependencia Swagger, documentacion de API de carritos y productos.
