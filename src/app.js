@@ -68,3 +68,4 @@ app.post('/loggerTest', (req,res) => {
   res.send('Testing logger');
 })
 
+export { app };

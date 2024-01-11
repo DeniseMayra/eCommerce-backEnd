@@ -13,6 +13,7 @@ export const generateProducts = () => {
     code: string.alphanumeric(5),
     description: commerce.productDescription(),
     status: datatype.boolean(),
-    category: datatype.boolean() ? PRODUCTS_CATEGORY_MOTORCYCLE : PRODUCTS_CATEGORY_ACCESORIES
+    category: datatype.boolean() ? PRODUCTS_CATEGORY_MOTORCYCLE : PRODUCTS_CATEGORY_ACCESORIES,
+    owner: database.mongodbObjectId()
   }
 };

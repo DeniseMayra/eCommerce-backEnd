@@ -73,7 +73,7 @@ export class ProductsController {
   static productsMock = async (req,res) => {
     try {
       const productsMock = [];
-      for ( let i=0; i<100; i++){
+      for ( let i=0; i<10; i++){
         productsMock.push(generateProducts());
       }
   
