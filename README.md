@@ -34,3 +34,6 @@
 
 11. Documentacion de API
 > Usando la dependencia Swagger, documentacion de API de carritos y productos.
+
+12. Testing
+> Modulo de testing usando la dependencia mocha, chai y supertest.
