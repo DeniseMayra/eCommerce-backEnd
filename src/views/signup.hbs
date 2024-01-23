@@ -1,6 +1,6 @@
 <h1>Signup Page</h1>
 
-<form action="/api/sessions/signup" method="POST">
+<form action="/api/sessions/signup" method="POST" enctype="multipart/form-data">
   <input type="text" name="first_name" placeholder="Ingrese nombre" required><br><br> 
   <input type="text" name="last_name" placeholder="Ingrese apellido"><br><br>
   <input type="email" name="email" placeholder="Ingrese email" required><br><br>
@@ -10,7 +10,8 @@
     <option value="user">User</option>
     <option value="admin">Admin</option>
     <option value="premium">Premium</option>
-  </select>
+  </select><br><br>
+  <input type="file" name="avatar">
   <br><br>
   <button>Registrar</button>
 </form>

@@ -16,3 +16,7 @@ export const PRODUCTS_CATEGORY_ACCESORIES = 'acc';
 
 export const NODE_DEVELOPMENT = 'dev';
 export const NODE_PRODUCTION = 'prod';
+
+export const USER_STATUS_PENDING = 'pending';
+export const USER_STATUS_COMPLETE = 'complete';
+export const USER_STATUS_INCOMPLETE = 'incomplete';

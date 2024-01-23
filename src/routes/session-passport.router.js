@@ -3,12 +3,13 @@ import { Router } from 'express';
 import { config } from '../config/config.js';
 import { authenticate } from '../config/auth.js';
 import { UserController } from '../controller/users.controller.js';
+import { uploaderProfileImage } from '../utils.js';
 
 const router = Router();
 
 
 // ---------- LOCAL SESSION ----------
-router.post('/signup', passport.authenticate('SignupLocalStrategy',
+router.post('/signup', uploaderProfileImage.single('avatar'), passport.authenticate('SignupLocalStrategy',
   {
     session: false,
     failureRedirect:'/api/sessions/fail-signup'
@@ -24,7 +25,7 @@ router.post('/login', passport.authenticate('LoginLocal',
   UserController.login
   );
 
-router.get('/logout', UserController.logout);
+router.get('/logout', authenticate('jwtAuth'), UserController.logout);
 
 
 router.get('/login', authenticate('jwtAuth') , UserController.getUserResponse);

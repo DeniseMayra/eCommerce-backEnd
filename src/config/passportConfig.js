@@ -34,6 +34,7 @@ export const initializePassport = () => {
         newUser.email = username;
         newUser.cartId = cart._id;
         newUser.password = createHash(password);
+        newUser.avatar = req.file.filename;
         const userCreated = await UserService.create(newUser);
         return done(null, userCreated);
 
@@ -54,6 +55,8 @@ export const initializePassport = () => {
         if ( !isValidPassword(password, user) ){
           return done(null, false);
         }
+        user.last_connection = new Date();
+        await UserService.update(user._id, user);
         return done(null, user);
 
       } catch (error) {

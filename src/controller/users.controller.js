@@ -1,4 +1,4 @@
-import { ROLE_PREMIUM, ROLE_USER } from '../clases/constant.js';
+import { ROLE_PREMIUM, ROLE_USER, USER_STATUS_COMPLETE, USER_STATUS_INCOMPLETE } from '../clases/constant.js';
 import { generateEmailToken, sendChangePasswordEmail, verifyEmailToken } from '../helpers/email.js';
 import { UserService } from '../services/users.service.js';
 import { createHash, generateToken, isValidPassword } from '../utils.js';
@@ -28,6 +28,8 @@ export class UserController {
 
   static logout = async (req,res) => {
     try {
+      req.user.last_connection = new Date();
+      await UserService.update(req.user._id, req.user);
       res.cookie('accessToken').json({error: false, message: 'logout success'});
       
     } catch (error) {
@@ -116,16 +118,52 @@ export class UserController {
     try {
       const user = await UserService.findById(req.params.uid);
       
-      if ( user.role === ROLE_PREMIUM ){
-        user.role = ROLE_USER;
-      } else if ( user.role === ROLE_USER){
-        user.role = ROLE_PREMIUM;
-      } else {
-        res.json({error: true, data: user, message: 'No se puede cambiar el rol'});
+      if ( user.status === USER_STATUS_COMPLETE ){
+        if ( user.role === ROLE_PREMIUM ){
+          user.role = ROLE_USER;
+        } else if ( user.role === ROLE_USER){
+          user.role = ROLE_PREMIUM;
+        } else {
+          res.json({error: true, data: user, message: 'No se puede cambiar el rol'});
+        }
+        await UserService.update(user._id, user);
+        res.json({error: false, data: user, message: 'Rol del usuario modificado'});
       }
-      await UserService.update(user._id, user);
-      res.json({error: false, data: user, message: 'Rol del usuario modificado'});
+      res.json({error: true, data: null, message: 'Debe cargar todos los documentos correspondientes'});
 
+    } catch (error) {
+      res.status(500).json({error: true, data: null, message: error.message});
+    }
+  };
+
+  static uploadDocument = async (req,res) => {
+    try {
+      const user = await UserService.findById(req.params.uid);
+
+      const identification = req.files['identification']?.[0] || null;
+      const address = req.files['address']?.[0] || null;
+      const accountState = req.files['accountState']?.[0] || null;
+      const docs = [];
+      if ( identification ) {
+        docs.push({name: 'identification', reference: identification.filename});
+      }
+      if ( address ) {
+        docs.push({name: 'address', reference: address.filename});
+      }
+      if ( accountState ) {
+        docs.push({name: 'accountState', reference: accountState.filename});
+      }
+
+      user.documents = docs;
+      if ( docs.length < 3 ){
+        user.status = USER_STATUS_INCOMPLETE;
+      } else {
+        user.status = USER_STATUS_COMPLETE;
+      }
+
+      await UserService.update(user._id, user);
+      res.json({error: false, data: user, message: 'Update success'});
+      
     } catch (error) {
       res.status(500).json({error: true, data: null, message: error.message});
     }
