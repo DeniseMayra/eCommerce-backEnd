@@ -37,3 +37,5 @@
 
 12. Testing
 > Modulo de testing usando la dependencia mocha, chai y supertest.
+
+13. Implementacion de multer

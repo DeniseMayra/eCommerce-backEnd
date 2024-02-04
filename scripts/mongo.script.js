@@ -19,7 +19,8 @@ const updateProducts = async () => {
 
 const updateUsers = async () => {
   try {
-    const results = await usersModel.updateMany({}, { $set: {avatar: ''}});
+    const date = new Date(2024, 1, 1);
+    const results = await usersModel.updateMany({last_connection: null}, { $set: {last_connection:date}});
     console.log('🚀 ~ file: mongo.script.js:11 ~ updateProducts ~ results:', results);
     
   } catch (error) {
