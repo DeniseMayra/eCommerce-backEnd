@@ -36,6 +36,16 @@ export class UsersManagerMongo {
     }
   };
 
+  findAll = async () => {
+    try {
+      const result = await this.model.find();
+      return result;
+      
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   findByEmail = async (email) => {
     try {
       const result = await this.model.findOne({email}).lean();
@@ -72,6 +82,20 @@ export class UsersManagerMongo {
       return result;
 
     } catch (error) {
+      if (error.kind === 'ObjectId') {
+        CustomErrorService.createIdNotFoundError(id);
+      } else {
+        CustomErrorService.createError({cause: error.reason, message, errorCode: ErrorEnum.DATABSE_ERROR});
+      }
+    }
+  }
+
+  delete = async (id) => {
+    try{
+      const result = await this.model.findByIdAndDelete(id);
+      return result;
+
+    } catch (error){
       if (error.kind === 'ObjectId') {
         CustomErrorService.createIdNotFoundError(id);
       } else {

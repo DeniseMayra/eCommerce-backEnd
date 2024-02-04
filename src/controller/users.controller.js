@@ -1,5 +1,5 @@
 import { ROLE_PREMIUM, ROLE_USER, USER_STATUS_COMPLETE, USER_STATUS_INCOMPLETE } from '../clases/constant.js';
-import { generateEmailToken, sendChangePasswordEmail, verifyEmailToken } from '../helpers/email.js';
+import { generateEmailToken, sendChangePasswordEmail, sendDeleteUserEmail, verifyEmailToken } from '../helpers/email.js';
 import { UserService } from '../services/users.service.js';
 import { createHash, generateToken, isValidPassword } from '../utils.js';
 
@@ -114,22 +114,68 @@ export class UserController {
 
 
   // ---------- ENDPOINTS ----------
+  static getUsers = async (req,res) => {
+    try {
+      const users = await UserService.findUsers();
+      const userMapper = users.map( u => { return { _id: u._id, first_name: u.first_name, email: u.email, role: u.role, last_connection: u.last_connection}});
+      res.json({error: false, data: userMapper, message: ''});
+
+    } catch (error) {
+      res.status(500).json({error: true, data: null, message: error.message});
+    }
+  };
+
+  static deleteUsers = async (req,res) => {
+    try {
+      const days = req.query.days ? parseInt(req.query.days) : 2;
+      const dayQty = 1000*60*60*24 * days;
+      const expireQty = new Date().getTime() - dayQty;
+      const expire = new Date(expireQty)
+
+      let users = await UserService.findUsers();
+      users = users.filter(user => {return user.last_connection < expire;});
+
+      users.forEach(async (u) => {
+        await UserService.delete(u._id);
+        sendDeleteUserEmail(u.first_name, u.email, `Eliminado por inactividad de la cuenta, ultima conexion: ${u.last_connection}`);
+      })
+
+      res.json({error: false, data: users, message: ''});
+
+    } catch (error) {
+      res.status(500).json({error: true, data: null, message: error.message});
+    }
+  };
+
+  static delete = async(req,res) => {
+    try{
+      const result = await UserService.delete(req.params.uid);  //objeto eliminado
+
+      sendDeleteUserEmail(req.user.first_name, req.user.email, 'Un usuario administrador elimino esta cuenta.');
+
+      res.json({error: false, data: result, message: ''});
+
+    } catch (error) {
+      res.status(500).json({error: true, data: null, message: error.message});
+    }
+  };
+
   static modifyRole = async (req,res) => {
     try {
       const user = await UserService.findById(req.params.uid);
       
-      if ( user.status === USER_STATUS_COMPLETE ){
+      // if ( user.status === USER_STATUS_COMPLETE ){
         if ( user.role === ROLE_PREMIUM ){
           user.role = ROLE_USER;
         } else if ( user.role === ROLE_USER){
           user.role = ROLE_PREMIUM;
         } else {
-          res.json({error: true, data: user, message: 'No se puede cambiar el rol'});
+          res.status(400).json({error: true, data: user, message: 'No se puede cambiar el rol'});
         }
         await UserService.update(user._id, user);
         res.json({error: false, data: user, message: 'Rol del usuario modificado'});
-      }
-      res.json({error: true, data: null, message: 'Debe cargar todos los documentos correspondientes'});
+      // }
+      // res.status(409).json({error: true, data: null, message: 'Debe cargar todos los documentos correspondientes'});
 
     } catch (error) {
       res.status(500).json({error: true, data: null, message: error.message});

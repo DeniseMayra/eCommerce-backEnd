@@ -37,6 +37,16 @@ export class UserManager {
     }
   };
 
+  findUsers = async () => {
+    try {
+      // To Do
+      return user;
+      
+    } catch {
+      throw new Error(error.message);
+    }
+  }
+
   findByEmail = async (email) => {
     try {
       // To Do
@@ -71,6 +81,16 @@ export class UserManager {
     try {
       // To Do
       return user[0];
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  delete = async() => {
+    try {
+      // To Do
+      return user;
 
     } catch (error) {
       throw new Error(error.message);

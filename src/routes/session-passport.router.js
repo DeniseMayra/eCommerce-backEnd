@@ -34,6 +34,8 @@ router.get('/profile', authenticate('jwtAuth'), UserController.getUserResponse);
 
 router.get('/signup', authenticate('jwtAuth') , UserController.getUserResponse);
 
+router.get('/userAdmin', authenticate('jwtAuth') , UserController.getUserResponse);
+
 router.post('/forgot-password', UserController.forgotPassword);
 
 router.post('/reset-password', UserController.resetPassword);

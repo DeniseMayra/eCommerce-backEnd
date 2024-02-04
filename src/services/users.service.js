@@ -1,6 +1,13 @@
 import { usersDAO } from '../dao/dao-manager.js';
 
 export class UserService {
+  static findUsers() {
+    return usersDAO.findAll();
+  }
+
+  static delete(user){
+    return usersDAO.delete(user);
+  }
 
   static findByEmail(email) {
     return usersDAO.findByEmail(email);

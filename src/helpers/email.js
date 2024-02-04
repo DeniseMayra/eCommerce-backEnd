@@ -35,3 +35,33 @@ export const verifyEmailToken = ( token ) => {
     return null;
   }
 }
+
+export const sendDeleteUserEmail = async (user, userEmail, message) => {
+  await transport.sendMail({
+    from: 'Ecommerce',
+    to: userEmail,
+    subject: 'Usuario Eliminado',
+    html: `
+    <div>
+      <h2>Hola !!</h2>
+      <p>Nos comunicamos para informarle que su usuario ${user} ha sido eliminado.</p>
+      <p>${message}</p>
+    </div>`
+  });
+}
+
+export const sendDeleteProductEmail = async (product, userEmail) => {
+  await transport.sendMail({
+    from: 'Ecommerce',
+    to: userEmail,
+    subject: 'Producto Eliminado',
+    html: `
+    <div>
+      <h2>Hola !!</h2>
+      <p>Nos comunicamos para informarle que el siguiente producto (creado por usted) ha sido eliminado:</p>
+      <p>PRODUCTO: ${product.title}</p>
+      <p>DESCRIPCION: ${product.description}</p>
+      <p>CODIGO: ${product.code}</p>
+    </div>`
+  });
+}

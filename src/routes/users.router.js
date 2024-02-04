@@ -6,6 +6,12 @@ import { uploaderProfileDocument } from '../utils.js';
 
 const router = Router();
 
+router.get('/', UserController.getUsers);
+
+router.delete('/:uid', authenticate('jwtAuth'), authorize([ROLE_ADMIN]), UserController.delete)
+
+router.delete('/', authenticate('jwtAuth'), authorize([ROLE_ADMIN]), UserController.deleteUsers)
+
 router.put('/premium/:uid', authenticate('jwtAuth'), authorize([ROLE_ADMIN]), UserController.modifyRole);
 
 router.post('/:uid/documents', authenticate('jwtAuth'), uploaderProfileDocument.fields([

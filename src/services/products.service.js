@@ -2,7 +2,7 @@ import { productsDAO } from '../dao/dao-manager.js';
 
 export class ProductsService {
 
-  static getProductsArray(req) {
+  static getProductsArray() {
     return productsDAO.getProductsArray();
   }
 

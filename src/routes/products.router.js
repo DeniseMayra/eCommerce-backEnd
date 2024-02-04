@@ -7,6 +7,8 @@ const router = Router();
 
 router.get('/', ProductsController.getProducts);
 
+router.get('/all', ProductsController.getAllProducts);
+
 router.get('/:pid', ProductsController.getById);
 
 router.post('/', authenticate('jwtAuth'), authorize([ROLE_ADMIN, ROLE_PREMIUM]), ProductsController.addProduct);

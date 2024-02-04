@@ -4,6 +4,7 @@ import { productRequired } from '../services/errorCauses.service.js';
 import { ProductsService } from '../services/products.service.js';
 import { generateProducts } from '../assets/mocks/productMock.js';
 import { ROLE_ADMIN, ROLE_PREMIUM } from '../clases/constant.js';
+import { sendDeleteProductEmail } from '../helpers/email.js';
 
 export class ProductsController {
 
@@ -16,6 +17,17 @@ export class ProductsController {
       res.status(500).json({error: true, payload: null, message: error.message});
     }
   };
+
+  static getAllProducts = async (req, res) => {
+    try{
+      const response = await ProductsService.getProductsArray();
+      res.json(response);
+      
+    } catch (error) {
+      res.status(500).json({error: true, payload: null, message: error.message});
+    }
+  };
+
 
   static getById = async(req, res) => {
     try{
@@ -59,10 +71,14 @@ export class ProductsController {
       const product = await ProductsService.getById(req.params.id);
       if ( req.user.role === ROLE_PREMIUM && product.owner === req.user._id || req.user.role === ROLE_ADMIN ){
         const result = await ProductsService.delete(req.params.id);  //objeto eliminado
+
+        if ( product.owner.role === ROLE_PREMIUM ){
+          sendDeleteProductEmail(product, product.owner.email);
+        }
         res.json({error: false, data: result, message: ''});
 
       } else {
-        res.json({error: true, data: null, message: 'No autorizado a eliminar el producto'});
+        res.status(401).json({error: true, data: null, message: 'No autorizado a eliminar el producto'});
       }
 
     } catch (error) {

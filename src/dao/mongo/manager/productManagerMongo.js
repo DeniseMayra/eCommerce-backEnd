@@ -39,7 +39,7 @@ export class ProductManagerMongo {
 
   getProductById = async(id) => {
     try{
-      const result = await this.model.findById(id);
+      const result = await this.model.findById(id).populate('owner').lean();
       return result;
 
     } catch (error) {
