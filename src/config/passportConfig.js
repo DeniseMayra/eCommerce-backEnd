@@ -34,7 +34,9 @@ export const initializePassport = () => {
         newUser.email = username;
         newUser.cartId = cart._id;
         newUser.password = createHash(password);
-        newUser.avatar = req.file.filename;
+        if (req.file) {
+          newUser.avatar = req.file.filename;
+        }
         const userCreated = await UserService.create(newUser);
         return done(null, userCreated);
 
