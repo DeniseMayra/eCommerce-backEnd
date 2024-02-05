@@ -4,6 +4,7 @@ import { config } from '../config/config.js';
 import { authenticate } from '../config/auth.js';
 import { UserController } from '../controller/users.controller.js';
 import { uploaderProfileImage } from '../utils.js';
+import { CartsController } from '../controller/carts.controller.js';
 
 const router = Router();
 
@@ -33,6 +34,8 @@ router.get('/login', authenticate('jwtAuth') , UserController.getUserResponse);
 router.get('/profile', authenticate('jwtAuth'), UserController.getUserResponse);
 
 router.get('/signup', authenticate('jwtAuth') , UserController.getUserResponse);
+
+router.get('/cart', authenticate('jwtAuth') , CartsController.getDataForCartPage);
 
 router.get('/userAdmin', authenticate('jwtAuth') , UserController.getUserResponse);
 

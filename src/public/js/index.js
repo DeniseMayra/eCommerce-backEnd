@@ -1,28 +1,25 @@
-const cartId = '651f6661f0f110960f1f1dfb';
-const url = 'http://localhost:8080';
+const userCartId = document.getElementById('cart-id').innerHTML;
 
-function addToCart(pid) {
-  const options = {
-    method: 'POST',
-    body: JSON.stringify({quantity: 1})
-  }
-  fetch(`${url}/api/carts/${cartId}/products/${pid}`, options)
-  .then(function(response){
-    if (response.status === 200){
-      alert('Producto Agregado');
+
+const addToCart = async (pid) => {
+  try {
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({quantity: 1})
     }
-  });
+    const response = await fetch(`/api/carts/${userCartId}/products/${pid}`, options)
+    
+    const result = await response.json();
+  
+    let showAlertMesasage = 'Producto Agregado';
+    if (result.error){
+      showAlertMesasage = `Error al agregar en el carrito. ${result.message}`;
+    }
+    alert(showAlertMesasage);
+    
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function deleteProductFromCart(pid) {
-  const options = {
-    method: 'DELETE',
-  }
-  fetch(`${url}/api/carts/${cartId}/products/${pid}`, options)
-  .then(function(response){
-    if (response.status === 200){
-      alert('Producto Eliminado');
-    }
-    location.reload();
-  });
-}
+

@@ -93,7 +93,9 @@ export class CartsController {
           if ( prodInCart.product.stock >= prodInCart.quantity ){
             totalAmount += prodInCart.quantity * prodInCart.product.price;
             const updateProdDB = {...prodInCart.product, stock: prodInCart.product.stock - prodInCart.quantity};
-            ProductsService.update(prodInCart.product._id, updateProdDB);
+
+            ProductsService.update(prodInCart.product._id.toString(), updateProdDB);
+            CartsService.deleteProduct(cart._id.toString(), prodInCart.product._id.toString());
             successProducts.push(prodInCart);
           } else {
             rejectedProducts.push(prodInCart);
@@ -110,12 +112,23 @@ export class CartsController {
         TicketsService.add(newTicket);
 
         if ( req.user.email ){
+          let productsInner = '';
+          successProducts.forEach(prod => {
+            productsInner += `
+              <div style="display: flex;">
+                <p style="margin-right: 20px;">${prod.product.title}</p>
+                <p style="margin-right: 20px;">Precio: ${prod.product.price}</p>
+                <p>Cantidad: ${prod.quantity}</p>
+              </div>
+            `;
+          })
+
           const template = `<div>
             <h4> ${req.user?.first_name ?? ''} </h4><br>
             <img src="https://i.pinimg.com/736x/e8/de/a9/e8dea964ee60ba898cbeb98bd92659cb.jpg" alt=""> <br><br>
             <b>Codigo de seguimiento: <b> <span>${newTicket.code}</span> <br><br>
             <b>Total de la compra: <b> <span>${newTicket.amount}</span> <br><br>
-            ${successProducts}
+            ${productsInner}
             </div>
           `;
   
@@ -130,9 +143,7 @@ export class CartsController {
         if ( rejectedProducts.length ){
           if ( successProducts.length ){
             res.json({erorr: false, message: 'Algunos productos no tienen stock', data: {ticket: newTicket, success: successProducts, reject: rejectedProducts}});
-
           } else {
-
             res.json({erorr: true, message: 'El/Los productos no tienen stock', data: {ticket: newTicket, success: null, reject: rejectedProducts}});
           }
         } else {
@@ -140,9 +151,8 @@ export class CartsController {
         }
 
       } else {
-        res.json({error: true, message: 'carrito vacio', data: null});
+        res.status(400).json({error: true, message: 'carrito vacio', data: null});
       }
-     
       
     } catch (error) {
       res.status(500).json({error: true, data: null, message: error.message});
@@ -159,4 +169,14 @@ export class CartsController {
       res.status(500).json({error: true, data: null, message: error.message});
     }
   }
+
+  static getDataForCartPage = async (req,res) => {
+    try {
+      const cart = await CartsService.getById(req.user.cartId);
+      res.json({error: false, message: '', user: req.user, cart}); 
+
+    } catch (error) {
+      res.status(500).json({error: true, data: null, message: error.message});
+    }
+  };
 }

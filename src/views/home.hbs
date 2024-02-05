@@ -1,6 +1,8 @@
 <h1>PRODUCTOS</h1>
 
-<h3>{{welcomeMessage}}</h3>
+<h3>Bienvenid@ {{user.first_name}}</h3>
+
+<div id="cart-id" style="display: none;">{{user.cartId}}</div>
 
 <div class="container">
 
@@ -12,7 +14,7 @@
           <h5 class="card-title">{{this.title}}</h5>
           <p class="card-text">{{this.desc}}</p>
           <p>$ {{this.price}}</p>
-          <a href="#" class="btn btn-primary" onclick="addToCart(`{{this._id}}`)">Add to Cart</a>
+          <a href="#" class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add to Cart</a>
         </div>
       </div>
 
@@ -37,7 +39,7 @@
 
 </div>
 
-<a href="http://localhost:8080/cart">Go to Cart</a>
+<a href="/cart">Go to Cart</a>
 
 
 <script src="/js/index.js"></script>

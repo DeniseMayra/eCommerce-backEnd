@@ -1,20 +1,20 @@
 import { Router } from 'express';
 import { ProductsService } from '../services/products.service.js';
 import { CartsService } from '../services/carts.service.js';
+import { authenticate } from '../config/auth.js';
 
 const router = Router();
 
-router.get('/products', async(req,res) => {
+router.get('/products', authenticate('jwtAuth'), async(req,res) => {
   const response = await ProductsService.getProductsMongo(req);
-  const message = req.user?.first_name ? `Bienvenid@ ${req.user.first_name}` : 'Bienvenid@';
-
-  res.render('home', {data: response, welcomeMessage: message});
+  res.render('home', {data: response, user: req.user});
 });
 
-router.get('/cart', async(req,res) => {
+router.get('/cart', authenticate('jwtAuth'), async(req,res) => {
   if ( req.user ){
     const result = await CartsService.getById(req.user.cartId);
     res.render('cart', {data: result.products});
+    
   } else {
     res.redirect('login');
   }
