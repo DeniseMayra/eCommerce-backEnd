@@ -17,11 +17,12 @@ import { messageRouter } from './routes/messages.router.js';
 import { viewsPassportRouter } from './routes/views-passport.router.js';
 import { sessionPassportRouter } from './routes/session-passport.router.js';
 import { usersRouter } from './routes/users.router.js';
+import { config } from './config/config.js';
 
 
 // ---------- CONFIG ----------
 const app = express();
-const port = 8080;
+const port = config.server.port || 8080;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors()); // {origin: 'http://127.0.01:4000'}
